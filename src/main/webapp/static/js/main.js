@@ -9,12 +9,14 @@ require([
         "dojo/store/Memory",
         "dijit/tree/ObjectStoreModel", 
         "dijit/Tree", 
-        "mydojo/assignment_all",
-        "mydojo/assignment_by_me",
+        "mydojo/assignment_tab_all",
+        "mydojo/assignment_tab_by_me",
+        "mydojo/employee_tab_all",
+        "mydojo/organization_tab_all",
         "dojo/domReady!",
 ], function(
         kernel, BorderContainer, TabContainer, MenuBar, DropDownMenu, MenuItem, PopupMenuBarItem, Memory, ObjectStoreModel, Tree,
-        AssignmentAllTab, AssignmentByMe
+        AssignmentTabAll, AssignmentTabByMe, EmployeeTabAll, OrganizationTabAll
 ){
 
     //
@@ -89,16 +91,20 @@ require([
         tree.onClick = function(item, node, event){
             
             if(item.id==='assignments_all' && !kernel.global.allAssignmentsTabOpen){
-                AssignmentAllTab();
+                AssignmentTabAll();
             }
             if(item.id==='assignments_by_me'){
-                AssignmentByMe();
+                AssignmentTabByMe();
             }
             if(item.id==='assignments_for_me'){
                  
             }
-            if(item.id==='organizations'){}
-            if(item.id==='employees'){}
+            if(item.id==='organizations'){
+                OrganizationTabAll();
+            }
+            if(item.id==='employees'){
+                EmployeeTabAll();
+            }
         }
         
         kernel.global.mainBorderContainer.addChild(tree);

@@ -49,7 +49,6 @@ public class AssignmentDAO implements AssignmentDAOLocal {
             cq.where(cb.like(root.<String>get("topic").as(String.class),"%"+filterTopic+"%"));
         if(filterText!=null)
             cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterText+"%"));
-        System.out.println(filterId +"  "+filterTopic+" "+filterText);
         return entityManager.createQuery(cq).setFirstResult(from).setMaxResults(limit).getResultList();
      }
     

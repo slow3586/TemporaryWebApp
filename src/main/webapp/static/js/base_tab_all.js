@@ -12,13 +12,13 @@ define([
         'dgrid/Grid',
         'dgrid/Selection',
         'dgrid/extensions/Pagination',
-        "mydojo/assignment_edit"
+        "mydojo/assignment_tab_edit"
 ], function(
         declare, kernel, 
         ContentPane, Button, Select, TextBox, Dialog,
         Rest, SimpleQuery, Trackable, 
         Grid, Selection, Pagination,
-        AssignmentEditTab
+        AssignmentTabEdit
 ){
     return declare("AssignmentAllTab", [ContentPane], {
         title: "All assignments",
@@ -35,20 +35,28 @@ define([
             {label:"Text", value:"text"},
             {label:"Author", value:"author_id"}
         ], 
+        gridColumns :[{ field: 'id', label: 'ID'},
+                    { field: 'topic', label: 'Topic' },
+                    { field: 'text', label: 'Text'},
+                    { field: 'author_id', label: 'Author', 
+                        formatter: function (author) {
+                                return author;
+                        }
+                    }],
         postCreate : function(){
             var self = this;
             
             this.addChild(new Button({
                 label: "Add",
-                onClick: function(){new AssignmentEditTab()}
+                onClick: function(){self.openAddTab()}
             }));
             this.addChild(new Button({
                 label: "Edit",
-                onClick: function(){new AssignmentEditTab({isEditing:true})}
+                onClick: function(){self.openEditTab()}
             }));
             this.addChild(new Button({
                 label: "Delete",
-                onClick: function(){this.openDeleteAssignmentDialog()}
+                onClick: function(){self.openDeleteAssignmentDialog()}
             }));
             var grid = this.createAllAssignmentsGrid();
             this.addChild(new Button({
@@ -147,14 +155,7 @@ define([
                 pagingTextBox: true,
                 firstLastArrows: true,
                 pageSizeOptions: [10, 20, 30, 40, 50],
-                columns: [{ field: 'id', label: 'ID'},
-                    { field: 'topic', label: 'Topic' },
-                    { field: 'text', label: 'Text'},
-                    { field: 'author_id', label: 'Author', 
-                        formatter: function (author) {
-                                return author;
-                        }
-                    }],
+                columns: this.gridColumns,
                 loadingMessage: 'Loading data...',
                 noDataMessage: 'No results found.'
             });
@@ -165,9 +166,15 @@ define([
                 this.gridSelectedRow = undefined;
             });
             this.grid.on('.dgrid-row:dblclick', function (event) {
-                new AssignmentEditTab({isEditing:true});
+                openEditTab();
             });
             return this.grid;
+        },
+        openAddTab : function(){
+            new AssignmentTabEdit({isEditing:false});
+        },
+        openEditTab : function(){
+            new AssignmentTabEdit({isEditing:true});
         }
     });
 });

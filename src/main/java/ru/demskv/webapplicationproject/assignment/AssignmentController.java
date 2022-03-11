@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.demskv.webapplicationproject.GsonUtil;
+import ru.demskv.webapplicationproject.JsonUtil;
 
 
 @Path("api/assignments/")
@@ -48,7 +48,7 @@ public class AssignmentController {
         }
         return Response.ok()
                 .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+assignmentService.countAll(filterId, filterTopic, filterText))
-                .entity(GsonUtil.tojson((assignmentService.findAll(from, limit, columnName, orderDesc, filterId, filterTopic, filterText))))
+                .entity(JsonUtil.tojson((assignmentService.findAll(from, limit, columnName, orderDesc, filterId, filterTopic, filterText))))
                 .build();
     }
     

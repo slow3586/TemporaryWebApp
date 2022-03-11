@@ -10,21 +10,21 @@ import java.util.logging.Logger;
 //import com.google.gson.Gson;
 
 
-public class GsonUtil {
-    private static ObjectMapper gson;
+public class JsonUtil {
+    private static ObjectMapper json;
     public static ObjectMapper getInstance(){
-        if(gson == null){
-            gson = new ObjectMapper();
-            gson.registerModule(new JavaTimeModule());
-            gson.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        if(json == null){
+            json = new ObjectMapper();
+            json.registerModule(new JavaTimeModule());
+            json.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         }
-        return gson;
+        return json;
     }
     public static String tojson(Object o){
         try {
             return getInstance().writeValueAsString(o);
         } catch (JsonProcessingException ex) {
-            Logger.getLogger(GsonUtil.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JsonUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }

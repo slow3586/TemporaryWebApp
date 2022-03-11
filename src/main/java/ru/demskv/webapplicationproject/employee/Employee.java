@@ -50,10 +50,11 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public Employee(Integer id, String lastname, String firstname, String position) {
+    public Employee(Integer id, String lastname, String firstname, String middlename, String position) {
         this.id = id;
         this.lastname = lastname;
         this.firstname = firstname;
+        this.middlename = middlename;
         this.position = position;
     }
 
