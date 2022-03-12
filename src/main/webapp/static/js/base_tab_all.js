@@ -1,6 +1,7 @@
 define([
         "dojo/_base/declare",
         "dojo/_base/kernel",
+        "dojo/aspect",
         "dijit/layout/ContentPane", 
         "dijit/form/Button",
         "dijit/form/Select",
@@ -14,7 +15,7 @@ define([
         'dgrid/extensions/Pagination',
         "mydojo/assignment_tab_edit"
 ], function(
-        declare, kernel, 
+        declare, kernel, aspect, 
         ContentPane, Button, Select, TextBox, Dialog,
         Rest, SimpleQuery, Trackable, 
         Grid, Selection, Pagination,
@@ -146,10 +147,12 @@ define([
                 loadingMessage: 'Loading data...',
                 noDataMessage: 'No results found.'
             });
-            this.grid.on('dgrid-refresh-complete', function(event) {
-                self.onGridUpdate();
+            aspect.after(this.grid, 'gotoPage', function (promise, args) {
+                promise.then(function () {
+                    self.onGridUpdate();
+                });
+                return promise;
             });
-            
             this.grid.on('dgrid-select', function (event) {
                 self.selectedRow = self.grid.row(event.rows[0]);
             });

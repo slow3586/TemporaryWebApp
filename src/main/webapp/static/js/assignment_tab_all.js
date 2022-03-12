@@ -30,27 +30,56 @@ define([
                     { field: 'text', label: 'Text'},
                     { field: 'executeattr', label: 'Status'},
                     { field: 'executeby', label: 'Execute by'},
-                    { field: 'executors', label: 'Executors'},
+                    { field: 'executorsIds', label: 'Executors'},
                     { field: 'authorId', label: 'Author'}
                 ],
                 employeeList: {},
                 onGridUpdate: function(){
+                    var tempEmployees = {};
+                    
+                    var nodes = Array();
+                    var qwe = Array();
+                    var ewq = new Array(1).fill(0).map(() => new Array(1).fill(0));
                     query(".field-authorId").forEach(function(node){
-                        console.log(node.innerText);
                         if(domAttr.get(node, "role")==="gridcell"){
-                            return request("api/employee?id="+node.innerText+"&limit=1").then(
-                                function(data){
-                                    var author = JSON.parse(data)[0];
-                                    console.log(author);
-                                    console.log(author.firstname +" "+ author.lastname);
-                                    html.set(node, author.firstname + " " + author.lastname);
-                                },
-                                function(error){
-                                    return error;
+                            var ids = node.innerText.split(",");
+                            node.innerText = "";
+                            for(let i=0; i<ids.length; i++){
+                                if(qwe.includes(ids[i])){
+                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                }else{
+                                    qwe.push(ids[i]);
+                                    ewq[qwe.indexOf(ids[i])] = Array();
+                                    ewq[qwe.indexOf(ids[i])].push(node);
                                 }
-                            );
+                            }
                         }
-                    })
+                    });
+                    query(".field-executorsIds").forEach(function(node){
+                        if(domAttr.get(node, "role")==="gridcell"){
+                            var ids = node.innerText.split(",");
+                            node.innerText = "";
+                            for(let i=0; i<ids.length; i++){
+                                if(qwe.includes(ids[i])){
+                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                }else{
+                                    qwe.push(ids[i]);
+                                    ewq[qwe.indexOf(ids[i])] = Array();
+                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                }
+                            }
+                        }
+                    });
+                    for(let i=0; i<qwe.length; i++){
+                        request("api/employee?id="+qwe[i]+"&limit=1").then(
+                            function(data){
+                                var e = JSON.parse(data)[0];
+                                for(let j=0; j<ewq[i].length; j++){
+                                    ewq[i][j].innerText += e.firstname + " " + e.lastname + " ";
+                                }  
+                            }
+                        );
+                    }
                 },
                 onClose : function(){
                     instance = null;

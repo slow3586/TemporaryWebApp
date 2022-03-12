@@ -6,10 +6,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Selection;
+import jakarta.persistence.criteria.SetJoin;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
 
 
@@ -37,50 +43,43 @@ public class AssignmentDAO implements AssignmentDAOLocal {
     @Override
     public List<AssignmentDTO> findAll(int from, int limit, String orderBy, boolean desc, Integer filterId, String filterTopic, String filterText) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<AssignmentDTO> cq = cb.createQuery(AssignmentDTO.class);
+        CriteriaQuery<Assignment> cq = cb.createQuery(Assignment.class);
         Root<Assignment> root = cq.from(Assignment.class);
         if(desc)
             cq.orderBy(cb.desc(root.get(orderBy)));
         else
             cq.orderBy(cb.asc(root.get(orderBy)));
-        cq.select(cb.construct(
-            AssignmentDTO.class,
-            root.get("id"),
-            root.get("topic"),
-            root.get("executeby"),
-            root.get("controlattr"),
-            root.get("executeattr"),
-            root.get("text"),
-            root.join("author").get("id"),
-            root.joinCollection("executors").get("id")
-        ));
         if(filterId!=null)
             cq.where(cb.equal(root.get("id"),filterId));
         if(filterTopic!=null)
             cq.where(cb.like(root.<String>get("topic").as(String.class),"%"+filterTopic+"%"));
         if(filterText!=null)
             cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterText+"%"));
-        return entityManager.createQuery(cq).setFirstResult(from).setMaxResults(limit).getResultList();
+        List<Assignment> assignments = entityManager.createQuery(cq).setFirstResult(from).setMaxResults(limit).getResultList();
+        List<AssignmentDTO> dtos = new ArrayList<>(assignments.size());
+        for (Assignment a : assignments) {
+            dtos.add(new AssignmentDTO(
+                    a.getId(), a.getTopic(), a.getExecuteby(), 
+                    a.getExecuteattr(),a.getControlattr(), a.getText(), 
+                    a.getAuthor().getId(), a.getExecutors()));
+        }
+        return dtos;
      }
     
     @Override
     public Optional<AssignmentDTO> findById(int id) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<AssignmentDTO> cq = cb.createQuery(AssignmentDTO.class);
+        CriteriaQuery<Assignment> cq = cb.createQuery(Assignment.class);
         Root<Assignment> root = cq.from(Assignment.class);
-        cq.select(cb.construct(
-            AssignmentDTO.class,
-            root.get("id"),
-            root.get("topic"),
-            root.get("executeby"),
-            root.get("controlattr"),
-            root.get("executeattr"),
-            root.get("text"),
-            root.join("author").get("id"),
-            root.joinCollection("executors").get("id")
-        ));
         cq.where(cb.equal(root.get("id"),id));
-        return Optional.of(entityManager.createQuery(cq).getSingleResult());
+        Assignment a = entityManager.createQuery(cq).getSingleResult();
+        if(a!=null){
+            return Optional.of(new AssignmentDTO(
+                    a.getId(), a.getTopic(), a.getExecuteby(),
+                    a.getExecuteattr(),a.getControlattr(), a.getText(),
+                    a.getAuthor().getId(), a.getExecutors()));
+        }
+        return Optional.empty();
     }
     
     @Override
@@ -109,7 +108,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
         assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthorId()));
-        List<Employee> l = new ArrayList<>(dto.getExecutorsIds().size());
+        Set<Employee> l = new HashSet<>(dto.getExecutorsIds().size());
         for (Integer eid : dto.getExecutorsIds())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
@@ -129,7 +128,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
         assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthorId()));
-        List<Employee> l = new ArrayList<>(dto.getExecutorsIds().size());
+        Set<Employee> l = new HashSet<>(dto.getExecutorsIds().size());
         for (Integer eid : dto.getExecutorsIds())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);

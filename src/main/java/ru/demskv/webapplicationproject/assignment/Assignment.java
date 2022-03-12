@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
 
 @Entity
@@ -52,7 +47,7 @@ public class Assignment implements Serializable {
         @JoinColumn(name = "assignment_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "employee_id", referencedColumnName = "id")})
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Employee> executors;
+    private Set<Employee> executors;
     @JoinColumn(name = "author_id", referencedColumnName = "id",  insertable=false, updatable=false)
     @ManyToOne(optional = false)
     private Employee author;
@@ -117,11 +112,11 @@ public class Assignment implements Serializable {
         this.text = text;
     }
     
-    public Collection<Employee> getExecutors() {
+    public Set<Employee> getExecutors() {
         return executors;
     }
 
-    public void setExecutors(Collection<Employee> employeeCollection) {
+    public void setExecutors(Set<Employee> employeeCollection) {
         this.executors = employeeCollection;
     }
 

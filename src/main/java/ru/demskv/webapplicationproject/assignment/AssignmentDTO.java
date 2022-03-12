@@ -1,35 +1,27 @@
 
 package ru.demskv.webapplicationproject.assignment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
 
 public class AssignmentDTO {
     private Integer id;
     private String topic;   
+    @JsonFormat(pattern = "HH:mm dd.MM.yyyy", timezone = "UTC")
     private Date executeby;
     private Integer controlattr;
     private Integer executeattr;
     private String text;
     private Integer authorId;
-    private Collection<Integer> executorsIds;
-    
-    public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Integer executorsIds) {
-        this.id = id;
-        this.topic = topic;
-        this.executeby = executeby;
-        this.controlattr = controlattr;
-        this.executeattr = executeattr;
-        this.text = text;
-        this.authorId = authorId;
-        this.executorsIds = new ArrayList<>();
-        this.executorsIds.add(executorsIds);
-    }
+    private Set<Integer> executorsIds;
 
-    public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Collection<Integer> executorsIds) {
+    public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Set<Employee> executorsIds) {
         this.id = id;
         this.topic = topic;
         this.executeby = executeby;
@@ -37,7 +29,11 @@ public class AssignmentDTO {
         this.executeattr = executeattr;
         this.text = text;
         this.authorId = authorId;
-        this.executorsIds = executorsIds;
+        Set<Integer> ids = new HashSet<>();
+        for (Employee e : executorsIds) {
+            ids.add(e.getId());
+        }
+        this.executorsIds = ids;
     }
 
     public Integer getId() {
@@ -96,11 +92,11 @@ public class AssignmentDTO {
         this.authorId = authorId;
     }
 
-    public Collection<Integer> getExecutorsIds() {
+    public Set<Integer> getExecutorsIds() {
         return executorsIds;
     }
 
-    public void setExecutorsIds(Collection<Integer> executorsIds) {
+    public void setExecutorsIds(Set<Integer> executorsIds) {
         this.executorsIds = executorsIds;
     }
     
