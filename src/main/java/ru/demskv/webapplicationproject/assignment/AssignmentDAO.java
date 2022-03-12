@@ -26,7 +26,9 @@ public class AssignmentDAO implements AssignmentDAOLocal {
     EntityManager entityManager;
     
     @Override
-    public Long countAll(Integer filterId, String filterTopic, String filterText) {
+    public Long countAll(Integer filterId, String filterTopic, String filterText, 
+                Integer filterAuthor, String filterExecuteby, 
+                String filterExecuteattr,Set<Integer> filterExecutors) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Assignment> root = cq.from(Assignment.class);
@@ -41,7 +43,10 @@ public class AssignmentDAO implements AssignmentDAOLocal {
     }
     
     @Override
-    public List<AssignmentDTO> findAll(int from, int limit, String orderBy, boolean desc, Integer filterId, String filterTopic, String filterText) {
+    public List<AssignmentDTO> findAll(int from, int limit, String orderBy, boolean desc, 
+            Integer filterId, String filterTopic, String filterText, 
+            Integer filterAuthor, String filterExecuteby, 
+            String filterExecuteattr,Set<Integer> filterExecutors) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Assignment> cq = cb.createQuery(Assignment.class);
         Root<Assignment> root = cq.from(Assignment.class);
@@ -65,22 +70,6 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         }
         return dtos;
      }
-    
-    @Override
-    public Optional<AssignmentDTO> findById(int id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Assignment> cq = cb.createQuery(Assignment.class);
-        Root<Assignment> root = cq.from(Assignment.class);
-        cq.where(cb.equal(root.get("id"),id));
-        Assignment a = entityManager.createQuery(cq).getSingleResult();
-        if(a!=null){
-            return Optional.of(new AssignmentDTO(
-                    a.getId(), a.getTopic(), a.getExecuteby(),
-                    a.getExecuteattr(),a.getControlattr(), a.getText(),
-                    a.getAuthor().getId(), a.getExecutors()));
-        }
-        return Optional.empty();
-    }
     
     @Override
     public List<Integer> getAssignmentExecutorsIds(int id){
@@ -107,9 +96,9 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
-        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthorId()));
-        Set<Employee> l = new HashSet<>(dto.getExecutorsIds().size());
-        for (Integer eid : dto.getExecutorsIds())
+        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor_id()));
+        Set<Employee> l = new HashSet<>(dto.getExecutors_ids().size());
+        for (Integer eid : dto.getExecutors_ids())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
         
@@ -127,9 +116,9 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
-        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthorId()));
-        Set<Employee> l = new HashSet<>(dto.getExecutorsIds().size());
-        for (Integer eid : dto.getExecutorsIds())
+        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor_id()));
+        Set<Employee> l = new HashSet<>(dto.getExecutors_ids().size());
+        for (Integer eid : dto.getExecutors_ids())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
         

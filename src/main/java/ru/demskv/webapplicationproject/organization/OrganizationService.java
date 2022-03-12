@@ -18,16 +18,11 @@ public class OrganizationService implements OrganizationServiceLocal {
         }
         
         @Override
-        public List<Organization> findAll(int from, int limit, String columnName, boolean desc, 
+        public List<OrganizationDTO> findAll(int from, int limit, String columnName, boolean desc, 
             Integer filterId, String filterName, String filterPhysAddress, String filterYurAddress,String filterDirector) {
             if(limit<=0) limit=1;
             return DAO.findAll(from, limit, columnName, desc, 
                     filterId, filterName, filterPhysAddress, filterYurAddress, filterDirector);
-        }
-        
-        @Override
-        public Optional<Organization> findById(int id) {
-            return DAO.findById(id);
         }
         
         @Override

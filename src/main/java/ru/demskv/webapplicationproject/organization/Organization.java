@@ -35,7 +35,7 @@ public class Organization implements Serializable {
     private String yurAddress;
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Employee directorId;
+    private Employee director;
 
     public Organization() {
     }
@@ -83,12 +83,12 @@ public class Organization implements Serializable {
         this.yurAddress = yurAddress;
     }
 
-    public Employee getDirectorId() {
-        return directorId;
+    public Employee getDirector() {
+        return director;
     }
 
-    public void setDirectorId(Employee directorId) {
-        this.directorId = directorId;
+    public void setDirector(Employee director) {
+        this.director = director;
     }
 
     @Override

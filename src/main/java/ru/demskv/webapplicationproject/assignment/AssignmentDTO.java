@@ -2,11 +2,8 @@
 package ru.demskv.webapplicationproject.assignment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
 
@@ -18,8 +15,8 @@ public class AssignmentDTO {
     private Integer controlattr;
     private Integer executeattr;
     private String text;
-    private Integer authorId;
-    private Set<Integer> executorsIds;
+    private Integer author_id;
+    private Set<Integer> executors_ids;
 
     public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Set<Employee> executorsIds) {
         this.id = id;
@@ -28,12 +25,12 @@ public class AssignmentDTO {
         this.controlattr = controlattr;
         this.executeattr = executeattr;
         this.text = text;
-        this.authorId = authorId;
+        this.author_id = authorId;
         Set<Integer> ids = new HashSet<>();
         for (Employee e : executorsIds) {
             ids.add(e.getId());
         }
-        this.executorsIds = ids;
+        this.executors_ids = ids;
     }
 
     public Integer getId() {
@@ -84,20 +81,20 @@ public class AssignmentDTO {
         this.text = text;
     }
 
-    public Integer getAuthorId() {
-        return authorId;
+    public Integer getAuthor_id() {
+        return author_id;
     }
 
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
+    public void setAuthor_id(Integer author_id) {
+        this.author_id = author_id;
     }
 
-    public Set<Integer> getExecutorsIds() {
-        return executorsIds;
+    public Set<Integer> getExecutors_ids() {
+        return executors_ids;
     }
 
-    public void setExecutorsIds(Set<Integer> executorsIds) {
-        this.executorsIds = executorsIds;
+    public void setExecutors_ids(Set<Integer> executors_ids) {
+        this.executors_ids = executors_ids;
     }
     
     

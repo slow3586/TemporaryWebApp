@@ -1,16 +1,18 @@
+var instance = null;
+
 define([
-        "dojo/_base/declare",
+        "dojo/_base/kernel",
         "dojo/request",
-        "dojo/html",
         "dojo/query",
         "dojo/dom-attr",
         "mydojo/base_tab_all",
         "mydojo/assignment_tab_edit",
 ], function(
-        declare, request, html, query, domAttr,
+        kernel, request, query, domAttr,
         BaseTabAll, AssignmentTabEdit
 ){
-    var instance = null;
+    
+    
     return function(){
         if(instance === null){
             instance = new BaseTabAll({
@@ -33,24 +35,42 @@ define([
                     { field: 'executorsIds', label: 'Executors'},
                     { field: 'authorId', label: 'Author'}
                 ],
-                employeeList: {},
+                filterAll : function(){
+                    var filterData = {'id':""};
+                    if(this.filterValue === undefined || this.filterValue === ""){}
+                    else{
+                        if(this.filterColumn==="id"){
+                            filterData = {'id':this.filterValue};
+                        }else if(this.filterColumn==="topic"){
+                            filterData = {'topic':this.filterValue};
+                        }else if(this.filterColumn==="text"){
+                            filterData = {'text':this.filterValue};
+                        }else if(this.filterColumn==="executeattr"){
+                            filterData = {'executeattr':this.filterValue};
+                        }else if(this.filterColumn==="executeby"){
+                            filterData = {'executeby':this.filterValue};
+                        }else if(this.filterColumn==="executorsIds"){
+                            filterData = {'executorsIds':this.filterValue};
+                        }else if(this.filterColumn==="authorId"){
+                            filterData = {'authorId':this.filterValue};
+                        }
+                    }
+                    this.grid.set("collection", this.gridData.filter(filterData));
+                },
                 onGridUpdate: function(){
-                    var tempEmployees = {};
-                    
-                    var nodes = Array();
-                    var qwe = Array();
-                    var ewq = new Array(1).fill(0).map(() => new Array(1).fill(0));
+                    var employeeIds = Array();
+                    var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
                     query(".field-authorId").forEach(function(node){
                         if(domAttr.get(node, "role")==="gridcell"){
                             var ids = node.innerText.split(",");
                             node.innerText = "";
                             for(let i=0; i<ids.length; i++){
-                                if(qwe.includes(ids[i])){
-                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                if(employeeIds.includes(ids[i])){
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
                                 }else{
-                                    qwe.push(ids[i]);
-                                    ewq[qwe.indexOf(ids[i])] = Array();
-                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                    employeeIds.push(ids[i]);
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
                                 }
                             }
                         }
@@ -60,22 +80,22 @@ define([
                             var ids = node.innerText.split(",");
                             node.innerText = "";
                             for(let i=0; i<ids.length; i++){
-                                if(qwe.includes(ids[i])){
-                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                if(employeeIds.includes(ids[i])){
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
                                 }else{
-                                    qwe.push(ids[i]);
-                                    ewq[qwe.indexOf(ids[i])] = Array();
-                                    ewq[qwe.indexOf(ids[i])].push(node);
+                                    employeeIds.push(ids[i]);
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
                                 }
                             }
                         }
                     });
-                    for(let i=0; i<qwe.length; i++){
-                        request("api/employee?id="+qwe[i]+"&limit=1").then(
+                    for(let i=0; i<employeeIds.length; i++){
+                        request("api/employee?id="+employeeIds[i]+"&limit=1").then(
                             function(data){
                                 var e = JSON.parse(data)[0];
-                                for(let j=0; j<ewq[i].length; j++){
-                                    ewq[i][j].innerText += e.firstname + " " + e.lastname + " ";
+                                for(let j=0; j<employeeNodeMap[i].length; j++){
+                                    employeeNodeMap[i][j].innerText += e.firstname + " " + e.lastname + " ";
                                 }  
                             }
                         );
@@ -100,5 +120,5 @@ define([
             });
         }
         return instance;
-    }
+    };
 });

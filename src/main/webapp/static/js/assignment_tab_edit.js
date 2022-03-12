@@ -5,10 +5,12 @@ define([
         "dijit/layout/ContentPane",
         "dijit/form/TextBox",
         "dijit/form/Textarea",
-        "dijit/form/Button"
+        "dijit/form/Button",
+        "mydojo/assignment_tab_all",
 ], function(
         declare, kernel, domClass, 
-        ContentPane, TextBox, TextArea, Button
+        ContentPane, TextBox, TextArea, Button,
+        AssignmentTabAll
 ){
 
     return declare("AssignmentEditTab", [ContentPane], {
@@ -32,6 +34,21 @@ define([
             var tbauthor = new TextBox({disabled:"true"});
             cp.addChild(tbauthor);
             this.addChild(cp);
+            
+            cp = new ContentPane({content:"Status:"});
+            var tbstatus = new TextBox({disabled:"true"});
+            cp.addChild(tbstatus);
+            this.addChild(cp);
+            
+            cp = new ContentPane({content:"Execute by:"});
+            var tbexecuteby = new TextBox({disabled:"true"});
+            cp.addChild(tbexecuteby);
+            this.addChild(cp);
+            
+            cp = new ContentPane({content:"Executors:"});
+            var tbexecutors = new TextBox({disabled:"true"});
+            cp.addChild(tbexecutors);
+            this.addChild(cp);
 
             cp = new ContentPane({content:"Text:"});
             var tbtext = new TextArea();
@@ -52,12 +69,16 @@ define([
                 label: this.isEditing ? "Save" : "Create",
                 onClick: function(){
                     var adata = {
-                                topic: tbtopic.get("value"),
-                                text: tbtext.get("value"),
-                                author_id: "1"//tbauthor_id.get("value")
-                            };
+                        topic: tbtopic.get("value"),
+                        text: tbtext.get("value"),
+                        author_id: "1",
+                        executors_ids: ["1", "2"],
+                        executeby: "2000-01-01T10:01:01Z",
+                        executeattr: "0",
+                        controlattr: "0"
+                    };
                     if(tbid.get("value")!=="") { adata.id = tbid.get("value"); }
-                    kernel.global.allAssignmentsGrid.collection.add(adata);
+                    console.log(AssignmentTabAll.instance);
                 }
             }));
 

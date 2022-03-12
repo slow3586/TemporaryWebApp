@@ -1,9 +1,8 @@
 define([
-        "dojo/_base/declare",
-        "mydojo/base_tab_all"
+        "mydojo/base_tab_all",
+        "mydojo/employee_tab_edit"
 ], function(
-        declare,
-        BaseTabAll
+        BaseTabAll, EmployeeTabEdit
 ){
     var instance = null;
     return function(){
@@ -27,8 +26,39 @@ define([
                 onClose : function(){
                     instance = null;
                     return true;
+                },
+                filterAll : function(){
+                    var filterData = {'id':""};
+                    if(this.filterValue === undefined || this.filterValue === ""){}
+                    else{
+                        if(this.filterColumn==="id"){
+                            filterData = {'id':this.filterValue};
+                        }else if(this.filterColumn==="firstname"){
+                            filterData = {'firstname':this.filterValue};
+                        }else if(this.filterColumn==="lastname"){
+                            filterData = {'lastname':this.filterValue};
+                        }else if(this.filterColumn==="middlename"){
+                            filterData = {'middlename':this.filterValue};
+                        }else if(this.filterColumn==="position"){
+                            filterData = {'position':this.filterValue};
+                        }
+                    }
+                    //this.grid.set("collection", this.gridData.filter(filterData));
+                },
+                openAddTab : function(){
+                    new EmployeeTabEdit({
+                        isEditing:false,
+                        rowData:this.selectedRow
+                    });
+                },
+                openEditTab : function(){
+                    new EmployeeTabEdit({
+                        isEditing:true,
+                        rowData:this.selectedRow
+                    });
                 }
             });
         }
-    }
+        return instance;
+    };
 });

@@ -26,11 +26,6 @@ public class EmployeeService implements EmployeeServiceLocal {
         }
         
         @Override
-        public Optional<Employee> findById(int id) {
-            return DAO.findById(id);
-        }
-        
-        @Override
         public void create(Employee assignment){
             DAO.create(assignment);
         }

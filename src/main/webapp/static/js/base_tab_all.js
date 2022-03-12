@@ -13,13 +13,11 @@ define([
         'dgrid/Grid',
         'dgrid/Selection',
         'dgrid/extensions/Pagination',
-        "mydojo/assignment_tab_edit"
 ], function(
         declare, kernel, aspect, 
         ContentPane, Button, Select, TextBox, Dialog,
         Rest, SimpleQuery, Trackable, 
         Grid, Selection, Pagination,
-        AssignmentTabEdit
 ){
     return declare("BaseTabAll", [ContentPane], {
         title: "BaseTabAll",
@@ -132,12 +130,6 @@ define([
             this.grid = new (declare([ Grid, Pagination, Selection ]))({
                 collection: this.gridData,
                 selectionMode: 'single',
-                /*
-                maxRowsPerPage: 10,
-                minRowsPerPage: 10,
-                bufferRows: 10,
-                pagingDelay: 100,
-                 * */
                 keepScrollPosition: 'true',
                 pagingLinks: 1,
                 pagingTextBox: true,
@@ -165,15 +157,10 @@ define([
             return this.grid;
         },
         onGridUpdate : function(){
-            this.gridData.forEach(function(item){
-                console.log(item.topic);
-            });
         },
         openAddTab : function(){
-            new AssignmentTabEdit({isEditing:false});
         },
         openEditTab : function(){
-            new AssignmentTabEdit({isEditing:true});
         }
     });
 });

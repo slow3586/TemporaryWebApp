@@ -5,6 +5,7 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Stateless(name="AssignmentServiceEJB")
 public class AssignmentService implements AssignmentServiceLocal {
@@ -13,19 +14,24 @@ public class AssignmentService implements AssignmentServiceLocal {
         AssignmentDAOLocal DAO;
                  
         @Override
-        public Long countAll(Integer filterId, String filterTopic, String filterText) {
-           return DAO.countAll(filterId, filterTopic, filterText);
+        public Long countAll(Integer filterId, String filterTopic, String filterText, 
+                Integer filterAuthor, String filterExecuteby, 
+                String filterExecuteattr,Set<Integer> filterExecutors) {
+           return DAO.countAll(filterId, filterTopic, filterText, 
+                   filterAuthor, filterExecuteby, 
+                   filterExecuteattr, filterExecutors);
         }
         
         @Override
-        public List<AssignmentDTO> findAll(int from, int limit, String columnName, boolean desc, Integer filterId, String filterTopic, String filterText) {
+        public List<AssignmentDTO> findAll(int from, int limit, String columnName, boolean desc, 
+                Integer filterId, String filterTopic, String filterText, 
+                Integer filterAuthor, String filterExecuteby, 
+                String filterExecuteattr,Set<Integer> filterExecutors) {
             if(limit<=0) limit=1;
-            return DAO.findAll(from, limit, columnName, desc, filterId, filterTopic, filterText);
-        }
-        
-        @Override
-        public Optional<AssignmentDTO> findById(int id) {
-            return DAO.findById(id);
+            return DAO.findAll(from, limit, columnName, desc, 
+                    filterId, filterTopic, filterText, 
+                    filterAuthor, filterExecuteby, 
+                    filterExecuteattr, filterExecutors);
         }
         
         @Override

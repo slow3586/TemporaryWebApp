@@ -58,11 +58,6 @@ public class EmployeeDAO implements EmployeeDAOLocal {
      }
     
     @Override
-    public Optional<Employee> findById(int id) {
-        return Optional.of(entityManager.find(Employee.class, id));
-    }
-    
-    @Override
     public void create(Employee assignment){    
         entityManager.getTransaction().begin();
         entityManager.persist(assignment);

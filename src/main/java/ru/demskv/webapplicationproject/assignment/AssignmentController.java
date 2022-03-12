@@ -16,6 +16,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.demskv.webapplicationproject.JsonUtil;
@@ -38,7 +39,10 @@ public class AssignmentController {
             @QueryParam("id") Integer filterId,
             @QueryParam("topic") String filterTopic,
             @QueryParam("text") String filterText,
-            @QueryParam("author") String filterAuthor
+            @QueryParam("author") Integer filterAuthor,
+            @QueryParam("executeby") String filterExecuteby,
+            @QueryParam("executeattr") String filterExecuteattr,
+            @QueryParam("executors") Set<Integer> filterExecutors
     ) {
         boolean orderDesc = false;
         String columnName = "id";
@@ -47,8 +51,13 @@ public class AssignmentController {
             columnName = orderBy.substring(1);
         }
         return Response.ok()
-                .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+service.countAll(filterId, filterTopic, filterText))
-                .entity(JsonUtil.tojson((service.findAll(from, limit, columnName, orderDesc, filterId, filterTopic, filterText))))
+                .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+
+                        service.countAll(filterId, filterTopic, filterText, filterAuthor, 
+                                filterExecuteby, filterExecuteattr, filterExecutors))
+                .entity(JsonUtil.tojson((service.findAll(
+                        from, limit, columnName, orderDesc, 
+                        filterId, filterTopic, filterText, filterAuthor,
+                        filterExecuteby, filterExecuteattr, filterExecutors))))
                 .build();
     }
     

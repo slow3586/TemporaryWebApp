@@ -11,10 +11,8 @@ public interface OrganizationDAOLocal {
     public Long countAll(
             Integer filterId, String filterName, String filterPhysAddress, String filterYurAddress,String filterDirector);
 
-    public List<Organization> findAll(int from, int limit, String columnName, boolean desc, 
+    public List<OrganizationDTO> findAll(int from, int limit, String columnName, boolean desc, 
             Integer filterId, String filterName, String filterPhysAddress, String filterYurAddress,String filterDirector);
-
-    public Optional<Organization> findById(int id);
 
     public void create(Organization item);
 

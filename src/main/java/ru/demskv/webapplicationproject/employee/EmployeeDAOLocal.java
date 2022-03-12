@@ -14,8 +14,6 @@ public interface EmployeeDAOLocal {
     public List<Employee> findAll(int from, int limit, String columnName, boolean desc, 
             Integer filterId, String filterFirstName, String filterMiddleName, String filterLastName, String filterPosition);
 
-    public Optional<Employee> findById(int id);
-
     public void create(Employee item);
 
     public void update(Employee item);
