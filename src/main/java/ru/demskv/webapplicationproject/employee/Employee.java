@@ -21,8 +21,6 @@ import ru.demskv.webapplicationproject.assignment.Assignment;
 
 @Entity
 @Table(name = "employee")
-@NamedQueries({
-    @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")})
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;

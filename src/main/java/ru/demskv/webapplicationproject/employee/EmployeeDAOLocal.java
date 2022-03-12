@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.employee;
 
 import jakarta.ejb.Local;

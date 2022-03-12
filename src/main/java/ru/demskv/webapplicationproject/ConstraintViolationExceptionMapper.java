@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject;
 
 import jakarta.validation.ConstraintViolation;
@@ -9,7 +8,7 @@ import jakarta.ws.rs.ext.Provider;
 
 
 @Provider
-public class MyExceptionMapper
+public class ConstraintViolationExceptionMapper
                implements ExceptionMapper<ConstraintViolationException> {
 
   @Override
@@ -21,10 +20,10 @@ public class MyExceptionMapper
   }
 
   private String prepareMessage(ConstraintViolationException exception) {
-      String msg = "";
+      StringBuilder b = new StringBuilder("Constraints violated: ");
       for (ConstraintViolation<?> cv : exception.getConstraintViolations()) {
-          msg+=cv.getPropertyPath()+" "+cv.getMessage()+"\n";
+          b.append(cv.getPropertyPath()).append(" ").append(cv.getMessage()).append("\n");
       }
-      return msg;
+      return b.toString();
   }
 }

@@ -3,19 +3,6 @@ html, body, #mainDiv {
     border: 0; padding: 0; margin: 0;
 }
 
-.field-id {
-    width:5%;
-}
-
-.field-topic {
-    width:15%;
-}
-.field-text{
-    width:65%;
-}
-.field-author{
-    width:15%;
-}
 
 .dijitButton{
     margin: 8px;

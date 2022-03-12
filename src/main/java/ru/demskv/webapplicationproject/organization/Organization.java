@@ -10,20 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import ru.demskv.webapplicationproject.employee.Employee;
 
 
 @Entity
 @Table(name = "organization")
-@NamedQueries({
-    @NamedQuery(name = "Organization.findAll", query = "SELECT o FROM Organization o"),
-    @NamedQuery(name = "Organization.findById", query = "SELECT o FROM Organization o WHERE o.id = :id"),
-    @NamedQuery(name = "Organization.findByName", query = "SELECT o FROM Organization o WHERE o.name = :name"),
-    @NamedQuery(name = "Organization.findByPhysAddress", query = "SELECT o FROM Organization o WHERE o.physAddress = :physAddress"),
-    @NamedQuery(name = "Organization.findByYurAddress", query = "SELECT o FROM Organization o WHERE o.yurAddress = :yurAddress")})
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;

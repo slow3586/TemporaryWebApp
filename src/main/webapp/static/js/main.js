@@ -90,7 +90,7 @@ require([
         
         tree.onClick = function(item, node, event){
             
-            if(item.id==='assignments_all' && !kernel.global.allAssignmentsTabOpen){
+            if(item.id==='assignments_all'){
                 AssignmentTabAll();
             }
             if(item.id==='assignments_by_me'){

@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,8 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import com.google.gson.Gson;
-
 
 public class JsonUtil {
     private static ObjectMapper json;

@@ -10,13 +10,15 @@ import java.util.Optional;
 public interface AssignmentDAOLocal {
     public Long countAll(Integer filterId, String filterTopic, String filterText);
     
-    public List<Assignment> findAll(int from, int limit, String orderBy, boolean desc, Integer filterId, String filterTopic, String filterText);
+    public List<AssignmentDTO> findAll(int from, int limit, String orderBy, boolean desc, Integer filterId, String filterTopic, String filterText);
     
-    public Optional<Assignment> findById(int id);
+    public Optional<AssignmentDTO> findById(int id);
     
-    public void create(Assignment assignment);
+    public List<Integer> getAssignmentExecutorsIds(int id);
     
-    public void update(Assignment assignment);
+    public void create(AssignmentDTO assignment);
+    
+    public void update(AssignmentDTO assignment);
     
     public void deleteById(int id);
 }

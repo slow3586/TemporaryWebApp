@@ -18,11 +18,6 @@ import ru.demskv.webapplicationproject.employee.Employee;
 
 @Entity
 @Table(name = "subdivision")
-@NamedQueries({
-    @NamedQuery(name = "Subdivision.findAll", query = "SELECT s FROM Subdivision s"),
-    @NamedQuery(name = "Subdivision.findById", query = "SELECT s FROM Subdivision s WHERE s.id = :id"),
-    @NamedQuery(name = "Subdivision.findByName", query = "SELECT s FROM Subdivision s WHERE s.name = :name"),
-    @NamedQuery(name = "Subdivision.findByAddress", query = "SELECT s FROM Subdivision s WHERE s.address = :address")})
 public class Subdivision implements Serializable {
 
     private static final long serialVersionUID = 1L;

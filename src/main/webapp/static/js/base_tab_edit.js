@@ -5,20 +5,17 @@ define([
         "dijit/layout/ContentPane",
         "dijit/form/TextBox",
         "dijit/form/Textarea",
-        "dijit/form/Button"
+        "dijit/form/Button",
 ], function(
         declare, kernel, domClass, 
         ContentPane, TextBox, TextArea, Button
 ){
 
-    return declare("AssignmentEditTab", [ContentPane], {
-        title: "New assignment",
+    return declare("BaseTabEdit", [ContentPane], {
+        title: "BaseTabEdit",
         closable: true,
         isEditing: false,
-        rowData: "",
         postCreate: function(){
-            var self = this;
-            
             var tbid = new TextBox({value:"", disabled:"true"});
 
             var cp = new ContentPane({content:"Topic:"});
@@ -40,12 +37,13 @@ define([
             this.addChild(cp);
 
             if(this.isEditing){
-                tbid.set("value", this.rowData.data.id);
-                tbtopic.set("value", this.rowData.data.topic);
-                tbtext.set("value", this.rowData.data.text);
-                tbauthor.set("value", this.rowData.data.author_id);
-                tbauthor_id.set("value", this.rowData.data.author_id);
-                this.set("title", "Edit assignment: "+this.rowData.data.topic);
+                var row = kernel.global.allAssignmentsGridSelectedRow;
+                tbid.set("value", row.data.id);
+                tbtopic.set("value", row.data.topic);
+                tbtext.set("value", row.data.text);
+                tbauthor.set("value", row.data.author_id);
+                tbauthor_id.set("value", row.data.author_id);
+                this.set("title", "Edit assignment: "+row.data.topic);
             }
 
             this.addChild(new Button({

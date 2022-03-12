@@ -21,12 +21,12 @@ import org.slf4j.LoggerFactory;
 import ru.demskv.webapplicationproject.JsonUtil;
 
 
-@Path("api/assignments/")
+@Path("api/assignment/")
 public class AssignmentController {
     final static Logger logger = LoggerFactory.getLogger(AssignmentController.class);
     
     @EJB(beanName="AssignmentServiceEJB")
-    private AssignmentServiceLocal assignmentService;
+    private AssignmentServiceLocal service;
     
     @GET
     @Path("")
@@ -47,30 +47,30 @@ public class AssignmentController {
             columnName = orderBy.substring(1);
         }
         return Response.ok()
-                .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+assignmentService.countAll(filterId, filterTopic, filterText))
-                .entity(JsonUtil.tojson((assignmentService.findAll(from, limit, columnName, orderDesc, filterId, filterTopic, filterText))))
+                .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+service.countAll(filterId, filterTopic, filterText))
+                .entity(JsonUtil.tojson((service.findAll(from, limit, columnName, orderDesc, filterId, filterTopic, filterText))))
                 .build();
     }
     
     @POST
     @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response post(@Valid Assignment assignment) {
-        assignmentService.create(assignment);
+    public Response post(@Valid AssignmentDTO assignment) {
+        service.create(assignment);
         return Response.ok().build();
     }
     
     @PUT
     @Path("{id}")
-    public Response put(@Valid Assignment assignment) {
-        assignmentService.update(assignment);
+    public Response put(@Valid AssignmentDTO assignment) {
+        service.update(assignment);
         return Response.ok().build();
     }
     
     @DELETE
     @Path("{id}")
     public Response delete(@PathParam("id") @Min(1) Integer id) {
-        assignmentService.deleteById(id);
+        service.deleteById(id);
         return Response.ok().build();
     }
 }

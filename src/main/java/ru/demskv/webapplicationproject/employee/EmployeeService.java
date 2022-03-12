@@ -1,12 +1,9 @@
-package ru.demskv.webapplicationproject.assignment;
+package ru.demskv.webapplicationproject.employee;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.List;
 import java.util.Optional;
-import ru.demskv.webapplicationproject.employee.Employee;
-import ru.demskv.webapplicationproject.employee.EmployeeDAOLocal;
-import ru.demskv.webapplicationproject.employee.EmployeeServiceLocal;
 
 @Stateless(name="EmployeeServiceEJB")
 public class EmployeeService implements EmployeeServiceLocal {

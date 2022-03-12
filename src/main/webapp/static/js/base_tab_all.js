@@ -20,29 +20,14 @@ define([
         Grid, Selection, Pagination,
         AssignmentTabEdit
 ){
-    return declare("AssignmentAllTab", [ContentPane], {
-        title: "All assignments",
+    return declare("BaseTabAll", [ContentPane], {
+        title: "BaseTabAll",
         closable: true,
         filterColumn : "id",
         grid: "",
         gridData: "",
         selectedRow: "",
         filterValue: "",
-        restTarget: 'api/assignments',
-        searchColumnChoices: [
-            {label:"Id", value:"id", selected:true},
-            {label:"Topic", value:"topic"},
-            {label:"Text", value:"text"},
-            {label:"Author", value:"author_id"}
-        ], 
-        gridColumns :[{ field: 'id', label: 'ID'},
-                    { field: 'topic', label: 'Topic' },
-                    { field: 'text', label: 'Text'},
-                    { field: 'author_id', label: 'Author', 
-                        formatter: function (author) {
-                                return author;
-                        }
-                    }],
         postCreate : function(){
             var self = this;
             
@@ -56,9 +41,9 @@ define([
             }));
             this.addChild(new Button({
                 label: "Delete",
-                onClick: function(){self.openDeleteAssignmentDialog()}
+                onClick: function(){self.openDeleteDialog()}
             }));
-            var grid = this.createAllAssignmentsGrid();
+            var grid = this.createGrid();
             this.addChild(new Button({
                 label: "Update",
                 onClick: function(){
@@ -71,7 +56,7 @@ define([
                 value: "id",
                 onChange: function(newValue){
                     self.filterColumn = newValue;
-                    self.filterAllAssignments();
+                    self.filterAll();
                 }
             });
             this.addChild(searchoptcb);
@@ -79,11 +64,11 @@ define([
                 label: "Search",
                 onChange: function(newValue){
                     self.filterValue = searchtb.get("value");
-                    self.filterAllAssignments();
+                    self.filterAll();
                 },
                 onKeyUp: function(event){
                     self.filterValue = searchtb.get("value");
-                    self.filterAllAssignments();
+                    self.filterAll();
                 }
             });
             this.addChild(searchtb);
@@ -92,7 +77,7 @@ define([
             grid.startup();
         },
 
-        filterAllAssignments : function(){
+        filterAll : function(){
             var filterData = {'id':""};
             if(this.filterValue === undefined || this.filterValue === ""){}
             else{
@@ -107,7 +92,7 @@ define([
             this.grid.set("collection", this.gridData.filter(filterData));
         },
 
-        openDeleteAssignmentDialog : function(){
+        openDeleteDialog : function(){
             if(this.gridSelectedRow===undefined) return;
 
             var dialog = new Dialog({
@@ -132,7 +117,9 @@ define([
             dialog.show();
         },
 
-        createAllAssignmentsGrid : function(){
+        createGrid : function(){
+            var self = this;
+            
             var TrackableRest = declare([Rest, SimpleQuery, Trackable]);
             this.gridData = new TrackableRest({ 
                 target: this.restTarget, 
@@ -159,16 +146,25 @@ define([
                 loadingMessage: 'Loading data...',
                 noDataMessage: 'No results found.'
             });
+            this.grid.on('dgrid-refresh-complete', function(event) {
+                self.onGridUpdate();
+            });
+            
             this.grid.on('dgrid-select', function (event) {
-                this.gridSelectedRow = this.grid.row(event.rows[0]);
+                self.selectedRow = self.grid.row(event.rows[0]);
             });
             this.grid.on('dgrid-deselect', function (event) {
-                this.gridSelectedRow = undefined;
+                self.selectedRow = undefined;
             });
             this.grid.on('.dgrid-row:dblclick', function (event) {
-                openEditTab();
+                self.openEditTab();
             });
             return this.grid;
+        },
+        onGridUpdate : function(){
+            this.gridData.forEach(function(item){
+                console.log(item.topic);
+            });
         },
         openAddTab : function(){
             new AssignmentTabEdit({isEditing:false});

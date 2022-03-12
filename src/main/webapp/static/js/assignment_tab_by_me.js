@@ -1,9 +1,10 @@
 define([
         "dojo/_base/declare",
-        "mydojo/base_tab_all"
+        "mydojo/base_tab_all",
+        "mydojo/assignment_tab_edit"
 ], function(
         declare,
-        BaseTabAll
+        BaseTabAll, AssignmentTabEdit
 ){
     var instance = null;
     return function(){
@@ -15,6 +16,15 @@ define([
                     {label:"Topic", value:"topic"},
                     {label:"Text", value:"text"}
                 ],
+                gridColumns :[{ field: 'id', label: 'ID'},
+                    { field: 'topic', label: 'Topic' },
+                    { field: 'text', label: 'Text'},
+                    { field: 'author_id', label: 'Author', 
+                        formatter: function (author) {
+                                return author;
+                        }
+                }],
+                restTarget : "api/assignment",
                 onClose : function(){
                     instance = null;
                     return true;
@@ -34,8 +44,21 @@ define([
                     filterData.author_id = 2;
                     console.log(filterData);
                     this.grid.set("collection", this.gridData.filter(filterData));
+                },
+                openAddTab : function(){
+                    new AssignmentTabEdit({
+                        isEditing:false,
+                        rowData:this.selectedRow
+                    });
+                },
+                openEditTab : function(){
+                    new AssignmentTabEdit({
+                        isEditing:true,
+                        rowData:this.selectedRow
+                    });
                 }
             });
         }
+        return instance;
     }
 });

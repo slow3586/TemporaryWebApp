@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.employee;
 
 import jakarta.ejb.Stateless;
@@ -9,9 +8,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
-import ru.demskv.webapplicationproject.employee.Employee;
-import ru.demskv.webapplicationproject.employee.EmployeeDAOLocal;
-import ru.demskv.webapplicationproject.employee.EmployeeServiceLocal;
 
 @Stateless(name="EmployeeDAOEJB")
 public class EmployeeDAO implements EmployeeDAOLocal {
@@ -27,13 +23,13 @@ public class EmployeeDAO implements EmployeeDAOLocal {
         if(filterId!=null)
             cq.where(cb.equal(root.get("id"),filterId));
         if(filterFirstName!=null)
-            cq.where(cb.like(root.<String>get("topic").as(String.class),"%"+filterFirstName+"%"));
+            cq.where(cb.like(root.<String>get("firstname").as(String.class),"%"+filterFirstName+"%"));
         if(filterMiddleName!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterMiddleName+"%"));
+            cq.where(cb.like(root.<String>get("middlename").as(String.class),"%"+filterMiddleName+"%"));
         if(filterLastName!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterLastName+"%"));
+            cq.where(cb.like(root.<String>get("lastname").as(String.class),"%"+filterLastName+"%"));
         if(filterPosition!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterPosition+"%"));
+            cq.where(cb.like(root.<String>get("position").as(String.class),"%"+filterPosition+"%"));
         return entityManager.createQuery(cq).getSingleResult();
     }
     
@@ -51,19 +47,19 @@ public class EmployeeDAO implements EmployeeDAOLocal {
         if(filterId!=null)
             cq.where(cb.equal(root.get("id"),filterId));
         if(filterFirstName!=null)
-            cq.where(cb.like(root.<String>get("topic").as(String.class),"%"+filterFirstName+"%"));
+            cq.where(cb.like(root.<String>get("firstname").as(String.class),"%"+filterFirstName+"%"));
         if(filterMiddleName!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterMiddleName+"%"));
+            cq.where(cb.like(root.<String>get("middlename").as(String.class),"%"+filterMiddleName+"%"));
         if(filterLastName!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterLastName+"%"));
+            cq.where(cb.like(root.<String>get("lastname").as(String.class),"%"+filterLastName+"%"));
         if(filterPosition!=null)
-            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterPosition+"%"));
+            cq.where(cb.like(root.<String>get("position").as(String.class),"%"+filterPosition+"%"));
         return entityManager.createQuery(cq).setFirstResult(from).setMaxResults(limit).getResultList();
      }
     
     @Override
     public Optional<Employee> findById(int id) {
-        return Optional.of(entityManager.createNamedQuery("Employee.findById", Employee.class).setParameter("id", id).getSingleResult());
+        return Optional.of(entityManager.find(Employee.class, id));
     }
     
     @Override
@@ -83,7 +79,7 @@ public class EmployeeDAO implements EmployeeDAOLocal {
     @Override
     public void deleteById(int id){
         entityManager.getTransaction().begin();
-        int executeUpdate = entityManager.createNamedQuery("Employee.deleteById").setParameter("id", id).executeUpdate();
+        entityManager.remove(entityManager.find(Employee.class, id));
         entityManager.getTransaction().commit();
     }
 }

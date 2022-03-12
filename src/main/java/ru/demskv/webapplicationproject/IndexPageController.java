@@ -1,27 +1,22 @@
 package ru.demskv.webapplicationproject;
 
-import java.io.InputStream;
-import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletContext;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
+import java.io.InputStream;
 
-@Path("static/")
-public class StaticContent {
-
-    @Inject
+@Path("")
+public class IndexPageController {
+@Inject
     ServletContext context;
-
+    
     @GET
-    @Path("{path: .*}")
-    public Response staticResources(
-            @PathParam("path") final String path) {
+    @Path("")
+    public Response staticResources() {
         final InputStream resource = context.
-                getResourceAsStream(
-                        String.format("/static/%s", path));
+                getResourceAsStream("/static/index.html");
         return null == resource
                 ? Response.status(Response.Status.NOT_FOUND).build()
                 : Response.ok().entity(resource).build();

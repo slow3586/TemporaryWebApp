@@ -1,10 +1,10 @@
-
 package ru.demskv.webapplicationproject.assignment;
 
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,21 +15,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import ru.demskv.webapplicationproject.employee.Employee;
-
 
 @Entity
 @Table(name = "assignment")
-@NamedQueries({
-    @NamedQuery(name = "Assignment.countAll", query = "SELECT count(a) FROM Assignment a"),
-    @NamedQuery(name = "Assignment.deleteById", query = "DELETE FROM Assignment WHERE id=:id")})
 public class Assignment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,9 +56,6 @@ public class Assignment implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "id",  insertable=false, updatable=false)
     @ManyToOne(optional = false)
     private Employee author;
-    @NotNull
-    @Column(name = "author_id")
-    private Integer author_id;
 
     public Assignment() {
     }
@@ -122,7 +116,7 @@ public class Assignment implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-/*
+    
     public Collection<Employee> getExecutors() {
         return executors;
     }
@@ -138,7 +132,7 @@ public class Assignment implements Serializable {
     public void setAuthor(Employee author) {
         this.author = author;
     }
-*/
+/*
     public Integer getAuthor_id() {
         return author_id;
     }
@@ -146,6 +140,7 @@ public class Assignment implements Serializable {
     public void setAuthor_id(Integer author_id) {
         this.author_id = author_id;
     }
+*/
     
 
     @Override

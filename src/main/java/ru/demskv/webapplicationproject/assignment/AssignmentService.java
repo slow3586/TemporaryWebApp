@@ -10,36 +10,41 @@ import java.util.Optional;
 public class AssignmentService implements AssignmentServiceLocal {
 
         @EJB(beanName="AssignmentDAOEJB")
-        AssignmentDAOLocal assignmentDAO;
+        AssignmentDAOLocal DAO;
                  
         @Override
         public Long countAll(Integer filterId, String filterTopic, String filterText) {
-           return assignmentDAO.countAll(filterId, filterTopic, filterText);
+           return DAO.countAll(filterId, filterTopic, filterText);
         }
         
         @Override
-        public List<Assignment> findAll(int from, int limit, String columnName, boolean desc, Integer filterId, String filterTopic, String filterText) {
+        public List<AssignmentDTO> findAll(int from, int limit, String columnName, boolean desc, Integer filterId, String filterTopic, String filterText) {
             if(limit<=0) limit=1;
-            return assignmentDAO.findAll(from, limit, columnName, desc, filterId, filterTopic, filterText);
+            return DAO.findAll(from, limit, columnName, desc, filterId, filterTopic, filterText);
         }
         
         @Override
-        public Optional<Assignment> findById(int id) {
-            return assignmentDAO.findById(id);
+        public Optional<AssignmentDTO> findById(int id) {
+            return DAO.findById(id);
         }
         
         @Override
-        public void create(Assignment assignment){
-            assignmentDAO.create(assignment);
+        public List<Integer> getAssignmentExecutorsIds(int id){
+            return DAO.getAssignmentExecutorsIds(id);
         }
         
         @Override
-        public void update(Assignment assignment){
-            assignmentDAO.update(assignment);
+        public void create(AssignmentDTO assignment){
+            DAO.create(assignment);
+        }
+        
+        @Override
+        public void update(AssignmentDTO assignment){
+            DAO.update(assignment);
         }
         
         @Override
         public void deleteById(int id){
-            assignmentDAO.deleteById(id);
+            DAO.deleteById(id);
         }
 }
