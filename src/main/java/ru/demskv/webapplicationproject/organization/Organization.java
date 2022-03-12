@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.organization;
 
 import java.io.Serializable;
@@ -13,26 +12,30 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import ru.demskv.webapplicationproject.employee.Employee;
 
-
 @Entity
 @Table(name = "organization")
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
+    
     @Basic(optional = false)
     @Column(name = "phys_address")
     private String physAddress;
+    
     @Basic(optional = false)
     @Column(name = "yur_address")
     private String yurAddress;
+    
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Employee director;

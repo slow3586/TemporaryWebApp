@@ -1,42 +1,37 @@
-
 package ru.demskv.webapplicationproject.employee;
 
 import java.io.Serializable;
-import java.util.Collection;
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import ru.demskv.webapplicationproject.assignment.Assignment;
-
 
 @Entity
 @Table(name = "employee")
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "lastname")
     private String lastname;
+    
     @Basic(optional = false)
     @Column(name = "firstname")
     private String firstname;
+    
     @Column(name = "middlename")
     private String middlename;
+    
     @Basic(optional = false)
     @Column(name = "position")
     private String position;

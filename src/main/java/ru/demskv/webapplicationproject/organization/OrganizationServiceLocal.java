@@ -14,9 +14,9 @@ public interface OrganizationServiceLocal {
     public List<OrganizationDTO> findAll(int from, int limit, String columnName, boolean desc, 
             Integer filterId, String filterName, String filterPhysAddress, String filterYurAddress,String filterDirector);
 
-    public void create(Organization item);
+    public void create(OrganizationDTO item);
 
-    public void update(Organization item);
+    public void update(OrganizationDTO item);
 
     public void deleteById(int id);
 }

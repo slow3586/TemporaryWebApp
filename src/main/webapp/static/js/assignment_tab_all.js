@@ -1,5 +1,3 @@
-var instance = null;
-
 define([
         "dojo/_base/kernel",
         "dojo/request",
@@ -10,9 +8,8 @@ define([
 ], function(
         kernel, request, query, domAttr,
         BaseTabAll, AssignmentTabEdit
-){
-    
-    
+){    
+    var instance = null;
     return function(){
         if(instance === null){
             instance = new BaseTabAll({
@@ -35,6 +32,9 @@ define([
                     { field: 'executorsIds', label: 'Executors'},
                     { field: 'authorId', label: 'Author'}
                 ],
+                assignGlobalVar: function(){
+                    kernel.global.assignmentTabAllInstance = this;
+                },
                 filterAll : function(){
                     var filterData = {'id':""};
                     if(this.filterValue === undefined || this.filterValue === ""){}

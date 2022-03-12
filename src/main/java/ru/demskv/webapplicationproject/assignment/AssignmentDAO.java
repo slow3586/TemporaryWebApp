@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.assignment;
 
 import jakarta.ejb.Stateless;
@@ -6,18 +5,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Selection;
-import jakarta.persistence.criteria.SetJoin;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
-
 
 @Stateless(name="AssignmentDAOEJB")
 public class AssignmentDAO implements AssignmentDAOLocal {
@@ -72,25 +65,10 @@ public class AssignmentDAO implements AssignmentDAOLocal {
      }
     
     @Override
-    public List<Integer> getAssignmentExecutorsIds(int id){
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<AssignmentEmployeeExecutor> cq = cb.createQuery(AssignmentEmployeeExecutor.class);
-        Root<AssignmentEmployeeExecutor> root = cq.from(AssignmentEmployeeExecutor.class);
-        cq.select(root);
-            cq.where(cb.equal(root.get("assignment_id"),id));
-        List<AssignmentEmployeeExecutor> rows = entityManager.createQuery(cq).getResultList();
-        List<Integer> ret = new ArrayList<>(rows.size());
-        for (int i = 0; i < ret.size(); i++) {
-            ret.add(rows.get(i).getEmployeeId());
-        }
-        return ret;
-    }
-    
-    @Override
     public void create(AssignmentDTO dto){    
         entityManager.getTransaction().begin();
         
-        Assignment assignment = new Assignment(0);
+        Assignment assignment = new Assignment();
         assignment.setTopic(dto.getTopic());
         assignment.setExecuteby(dto.getExecuteby());
         assignment.setControlattr(dto.getControlattr());
@@ -101,6 +79,15 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         for (Integer eid : dto.getExecutors_ids())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
+        assignment.setAuthor_id(dto.getAuthor_id());
+        
+        System.out.println(assignment.getTopic());
+        System.out.println(assignment.getExecuteby());
+        System.out.println(assignment.getControlattr());
+        System.out.println(assignment.getExecuteattr());
+        System.out.println(assignment.getText());
+        System.out.println(assignment.getAuthor().getFirstname());
+        System.out.println(assignment.getExecutors().size());
         
         entityManager.persist(assignment);
         entityManager.getTransaction().commit();

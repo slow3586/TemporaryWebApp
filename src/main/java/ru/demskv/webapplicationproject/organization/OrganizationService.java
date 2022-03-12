@@ -26,12 +26,12 @@ public class OrganizationService implements OrganizationServiceLocal {
         }
         
         @Override
-        public void create(Organization assignment){
+        public void create(OrganizationDTO assignment){
             DAO.create(assignment);
         }
         
         @Override
-        public void update(Organization assignment){
+        public void update(OrganizationDTO assignment){
             DAO.update(assignment);
         }
         

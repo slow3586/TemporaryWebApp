@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.organization;
 
 import jakarta.ejb.Stateless;
@@ -9,12 +8,11 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import ru.demskv.webapplicationproject.organization.OrganizationDAOLocal;
+import ru.demskv.webapplicationproject.employee.Employee;
 
 @Stateless(name="OrganizationDAOEJB")
 public class OrganizationDAO implements OrganizationDAOLocal {
-     @PersistenceContext(unitName="mysql")
+    @PersistenceContext(unitName="mysql")
     EntityManager entityManager;
     
     @Override
@@ -67,16 +65,30 @@ public class OrganizationDAO implements OrganizationDAOLocal {
     }
     
     @Override
-    public void create(Organization assignment){    
+    public void create(OrganizationDTO dto){    
         entityManager.getTransaction().begin();
-        entityManager.persist(assignment);
+        
+        Organization organization = new Organization();
+        organization.setName(dto.getName());
+        organization.setYurAddress(dto.getYurAddress());
+        organization.setPhysAddress(dto.getPhysAddress());
+        Employee director = entityManager.getReference(Employee.class, dto.getDirector());
+        organization.setDirector(director);
+        entityManager.persist(organization);
         entityManager.getTransaction().commit();
     }
     
     @Override
-    public void update(Organization assignment){
+    public void update(OrganizationDTO dto){
         entityManager.getTransaction().begin();
-        entityManager.merge(assignment);
+        
+        Organization organization = entityManager.find(Organization.class, dto.getId());
+        organization.setName(dto.getName());
+        organization.setYurAddress(dto.getYurAddress());
+        organization.setPhysAddress(dto.getPhysAddress());
+        Employee director = entityManager.getReference(Employee.class, dto.getDirector());
+        organization.setDirector(director);
+        entityManager.merge(organization);
         entityManager.getTransaction().commit();
     }
     

@@ -1,11 +1,12 @@
 define([
+        "dojo/_base/kernel",
         "dojo/request",
         "dojo/query",
         "dojo/dom-attr",
         "mydojo/base_tab_all",
         "mydojo/organization_tab_edit"
 ], function(
-        request, query, domAttr,
+        kernel, request, query, domAttr,
         BaseTabAll, OrganizationTabEdit
 ){
     var instance = null;
@@ -27,6 +28,10 @@ define([
                     { field: 'physAddress', label: "Phys Address"}, 
                     { field: 'director', label: 'Director'} 
                 ],
+                
+                assignGlobalVar: function(){
+                    kernel.global.organizationTabAllInstance = this;
+                },
                 onClose : function(){
                     instance = null;
                     return true;

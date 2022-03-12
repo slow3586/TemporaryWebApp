@@ -20,37 +20,51 @@ import jakarta.persistence.TemporalType;
 import java.util.Set;
 import ru.demskv.webapplicationproject.employee.Employee;
 
+/**
+ * Assignment entity class.
+ */
 @Entity
 @Table(name = "assignment")
 public class Assignment implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "topic")
     private String topic;   
+    
     @Column(name = "executeby")
     @Temporal(TemporalType.TIMESTAMP)
     private Date executeby;
+    
     @Column(name = "controlattr")
     private Integer controlattr;
+    
     @Column(name = "executeattr")
     private Integer executeattr;
+    
     @Lob
     @Column(name = "text")
     private String text;
+    
     @JoinTable(name = "assignment_employee_executor", joinColumns = {
         @JoinColumn(name = "assignment_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "employee_id", referencedColumnName = "id")})
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Employee> executors;
+    
     @JoinColumn(name = "author_id", referencedColumnName = "id",  insertable=false, updatable=false)
     @ManyToOne(optional = false)
     private Employee author;
+    
+    @Column(name = "author_id")
+    private Integer author_id;
 
     public Assignment() {
     }
@@ -127,16 +141,6 @@ public class Assignment implements Serializable {
     public void setAuthor(Employee author) {
         this.author = author;
     }
-/*
-    public Integer getAuthor_id() {
-        return author_id;
-    }
-
-    public void setAuthor_id(Integer author_id) {
-        this.author_id = author_id;
-    }
-*/
-    
 
     @Override
     public int hashCode() {
@@ -147,7 +151,6 @@ public class Assignment implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Assignment)) {
             return false;
         }
@@ -161,6 +164,14 @@ public class Assignment implements Serializable {
     @Override
     public String toString() {
         return "ru.demskv.webapplicationproject.assignment.Assignment[ id=" + id + " ]";
+    }
+
+    public Integer getAuthor_id() {
+        return author_id;
+    }
+
+    public void setAuthor_id(Integer author_id) {
+        this.author_id = author_id;
     }
 
 }

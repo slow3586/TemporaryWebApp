@@ -78,10 +78,9 @@ define([
                         controlattr: "0"
                     };
                     if(tbid.get("value")!=="") { adata.id = tbid.get("value"); }
-                    console.log(AssignmentTabAll.instance);
+                    kernel.global.assignmentTabAllInstance.gridData.add(adata);
                 }
             }));
-
             kernel.global.mainTabContainer.addChild(this);
         }
     })

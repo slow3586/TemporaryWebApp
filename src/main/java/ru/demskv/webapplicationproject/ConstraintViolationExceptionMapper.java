@@ -6,12 +6,20 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
-
+/**
+ *  Triggers on violations of entity constraints, for example when passing
+ *  incorrect JSON data or JAX-RS queries.
+ */
 @Provider
 public class ConstraintViolationExceptionMapper
                implements ExceptionMapper<ConstraintViolationException> {
 
-  @Override
+    /**
+     *
+     * @param exception
+     * @return
+     */
+    @Override
   public Response toResponse(final ConstraintViolationException exception) {
       return Response.status(Response.Status.BAD_REQUEST)
                      .entity(prepareMessage(exception))

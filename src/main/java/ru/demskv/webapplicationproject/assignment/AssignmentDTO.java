@@ -18,6 +18,9 @@ public class AssignmentDTO {
     private Integer author_id;
     private Set<Integer> executors_ids;
 
+    public AssignmentDTO() {
+    }
+    
     public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Set<Employee> executorsIds) {
         this.id = id;
         this.topic = topic;

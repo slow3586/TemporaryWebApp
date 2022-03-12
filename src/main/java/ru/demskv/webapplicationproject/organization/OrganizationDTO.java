@@ -7,14 +7,17 @@ public class OrganizationDTO {
     private String name;
     private String physAddress;
     private String yurAddress;
-    private Integer directorId;
+    private Integer director;
 
+    public OrganizationDTO() {
+    }
+    
     public OrganizationDTO(Integer id, String name, String physAddress, String yurAddress, Integer directorId) {
         this.id = id;
         this.name = name;
         this.physAddress = physAddress;
         this.yurAddress = yurAddress;
-        this.directorId = directorId;
+        this.director = directorId;
     }
 
     public Integer getId() {
@@ -49,12 +52,12 @@ public class OrganizationDTO {
         this.yurAddress = yurAddress;
     }
 
-    public Integer getDirectorId() {
-        return directorId;
+    public Integer getDirector() {
+        return director;
     }
 
-    public void setDirectorId(Integer directorId) {
-        this.directorId = directorId;
+    public void setDirector(Integer director) {
+        this.director = director;
     }
     
     

@@ -21,7 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.demskv.webapplicationproject.JsonUtil;
 
-
+/**
+ * Assignment JAX-RS controller class.
+ */
 @Path("api/assignment/")
 public class AssignmentController {
     final static Logger logger = LoggerFactory.getLogger(AssignmentController.class);
@@ -44,20 +46,33 @@ public class AssignmentController {
             @QueryParam("executeattr") String filterExecuteattr,
             @QueryParam("executors") Set<Integer> filterExecutors
     ) {
+        
+        //Parse orderBy param
+        //Example: +id, -id, +name, -name
+        //+ is ASC, - is DESC
         boolean orderDesc = false;
         String columnName = "id";
         if(orderBy!=null && !orderBy.isBlank()){
             orderDesc = !orderBy.substring(0, 1).equals("-");
             columnName = orderBy.substring(1);
         }
+        
+        //Build content range and total count of objects in the DB header string
+        //Example: items 0-10/100
+        StringBuilder contentRangeBuilder = new StringBuilder();
+        contentRangeBuilder.append("items ")
+                .append(from).append("-").append(from+limit).append("/")
+                .append(service.countAll(filterId, filterTopic, filterText, filterAuthor, 
+                                filterExecuteby, filterExecuteattr, filterExecutors));
         return Response.ok()
-                .header("Content-Range", "items "+from+"-"+(from+limit)+"/"+
-                        service.countAll(filterId, filterTopic, filterText, filterAuthor, 
-                                filterExecuteby, filterExecuteattr, filterExecutors))
+                .header("Content-Range", contentRangeBuilder.toString())
+                
+                //Return entity as JSON
                 .entity(JsonUtil.tojson((service.findAll(
                         from, limit, columnName, orderDesc, 
                         filterId, filterTopic, filterText, filterAuthor,
                         filterExecuteby, filterExecuteattr, filterExecutors))))
+                
                 .build();
     }
     

@@ -19,8 +19,6 @@ public interface AssignmentServiceLocal {
                 Integer filterId, String filterTopic, String filterText, 
                 Integer filterAuthor, String filterExecuteby, 
                 String filterExecuteattr,Set<Integer> filterExecutors);
-
-        public List<Integer> getAssignmentExecutorsIds(int id);
         
         public void create(AssignmentDTO assignment);
         

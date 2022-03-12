@@ -1,35 +1,41 @@
 define([
-        "dojo/_base/declare",
+        "dojo/_base/kernel",
+        "dojo/request",
+        "dojo/query",
+        "dojo/dom-attr",
         "mydojo/base_tab_all",
-        "mydojo/assignment_tab_edit"
+        "mydojo/assignment_tab_edit",
 ], function(
-        declare,
+        kernel, request, query, domAttr,
         BaseTabAll, AssignmentTabEdit
-){
+){    
     var instance = null;
     return function(){
         if(instance === null){
             instance = new BaseTabAll({
-                title:"Assignments by me",
-                searchColumnChoices:[
+                title : "All assignments",
+                restTarget: "api/assignment",
+                searchColumnChoices: [
                     {label:"Id", value:"id", selected:true},
                     {label:"Topic", value:"topic"},
-                    {label:"Text", value:"text"}
-                ],
+                    {label:"Text", value:"text"},
+                    {label:"Status", value:"executeattr"},
+                    {label:"Execute by", value:"executeby"},
+                    {label:"Executors", value:"executors"},
+                    {label:"Author", value:"author"}
+                ], 
                 gridColumns :[{ field: 'id', label: 'ID'},
                     { field: 'topic', label: 'Topic' },
                     { field: 'text', label: 'Text'},
-                    { field: 'author_id', label: 'Author', 
-                        formatter: function (author) {
-                                return author;
-                        }
-                }],
-                restTarget : "api/assignment",
-                onClose : function(){
-                    instance = null;
-                    return true;
+                    { field: 'executeattr', label: 'Status'},
+                    { field: 'executeby', label: 'Execute by'},
+                    { field: 'executorsIds', label: 'Executors'},
+                    { field: 'authorId', label: 'Author'}
+                ],
+                assignGlobalVar: function(){
+                    kernel.global.assignmentTabAllInstance = this;
                 },
-                filterAllAssignments : function(){
+                filterAll : function(){
                     var filterData = {'id':""};
                     if(this.filterValue === undefined || this.filterValue === ""){}
                     else{
@@ -39,11 +45,65 @@ define([
                             filterData = {'topic':this.filterValue};
                         }else if(this.filterColumn==="text"){
                             filterData = {'text':this.filterValue};
+                        }else if(this.filterColumn==="executeattr"){
+                            filterData = {'executeattr':this.filterValue};
+                        }else if(this.filterColumn==="executeby"){
+                            filterData = {'executeby':this.filterValue};
+                        }else if(this.filterColumn==="executorsIds"){
+                            filterData = {'executorsIds':this.filterValue};
+                        }else if(this.filterColumn==="authorId"){
+                            filterData = {'authorId':this.filterValue};
                         }
                     }
-                    filterData.author_id = 2;
-                    console.log(filterData);
                     this.grid.set("collection", this.gridData.filter(filterData));
+                },
+                onGridUpdate: function(){
+                    var employeeIds = Array();
+                    var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
+                    query(".field-authorId").forEach(function(node){
+                        if(domAttr.get(node, "role")==="gridcell"){
+                            var ids = node.innerText.split(",");
+                            node.innerText = "";
+                            for(let i=0; i<ids.length; i++){
+                                if(employeeIds.includes(ids[i])){
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                                }else{
+                                    employeeIds.push(ids[i]);
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                                }
+                            }
+                        }
+                    });
+                    query(".field-executorsIds").forEach(function(node){
+                        if(domAttr.get(node, "role")==="gridcell"){
+                            var ids = node.innerText.split(",");
+                            node.innerText = "";
+                            for(let i=0; i<ids.length; i++){
+                                if(employeeIds.includes(ids[i])){
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                                }else{
+                                    employeeIds.push(ids[i]);
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
+                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                                }
+                            }
+                        }
+                    });
+                    for(let i=0; i<employeeIds.length; i++){
+                        request("api/employee?id="+employeeIds[i]+"&limit=1").then(
+                            function(data){
+                                var e = JSON.parse(data)[0];
+                                for(let j=0; j<employeeNodeMap[i].length; j++){
+                                    employeeNodeMap[i][j].innerText += e.firstname + " " + e.lastname + " ";
+                                }  
+                            }
+                        );
+                    }
+                },
+                onClose : function(){
+                    instance = null;
+                    return true;
                 },
                 openAddTab : function(){
                     new AssignmentTabEdit({
@@ -60,5 +120,5 @@ define([
             });
         }
         return instance;
-    }
+    };
 });

@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.demskv.webapplicationproject.JsonUtil;
 
-
 @Path("api/organization/")
 public class OrganizationController {
     final static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
@@ -57,14 +56,14 @@ public class OrganizationController {
     @POST
     @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response post(@Valid Organization in) {
+    public Response post(@Valid OrganizationDTO in) {
         service.create(in);
         return Response.ok().build();
     }
     
     @PUT
     @Path("{id}")
-    public Response put(@Valid Organization in) {
+    public Response put(@Valid OrganizationDTO in) {
         service.update(in);
         return Response.ok().build();
     }

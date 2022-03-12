@@ -8,6 +8,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Delivers static content to the client.
+ */
 @Path("static/")
 public class StaticContentController {
 

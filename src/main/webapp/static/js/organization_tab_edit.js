@@ -57,12 +57,12 @@ define([
                 onClick: function(){
                     var adata = {
                         name: tbname.get("value"),
-                        yuraddress: tbyuraddress.get("value"),
-                        physaddress: tbphysaddress.get("value"),
+                        yurAddress: tbyuraddress.get("value"),
+                        physAddress: tbphysaddress.get("value"),
                         director: tbdirector.get("value"),
                     };
                     if(tbid.get("value")!=="") { adata.id = tbid.get("value"); }
-                    OrganizationTabAll().collection.add(adata);
+                    kernel.global.organizationTabAllInstance.gridData.add(adata);
                 }
             }));    
             kernel.global.mainTabContainer.addChild(this);

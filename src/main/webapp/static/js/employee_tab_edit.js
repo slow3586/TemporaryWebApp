@@ -21,7 +21,7 @@ define([
             
             var tbid = new TextBox({value:"", disabled:"true"});
 
-            cp = new ContentPane({content:"First name:"});
+            var cp = new ContentPane({content:"First name:"});
             var tbfirstname = new TextBox();
             cp.addChild(tbfirstname);
             this.addChild(cp);
@@ -60,7 +60,7 @@ define([
                         position: tbposition.get("value"),
                     };
                     if(tbid.get("value")!=="") { adata.id = tbid.get("value"); }
-                    kernel.global.allAssignmentsGrid.collection.add(adata);
+                    kernel.global.employeeTabAllInstance.gridData.add(adata);
                 }
             }));
 

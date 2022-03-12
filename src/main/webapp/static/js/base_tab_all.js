@@ -74,8 +74,9 @@ define([
             this.addChild(grid);
             kernel.global.mainTabContainer.addChild(this);
             grid.startup();
+            this.assignGlobalVar();
         },
-
+        assignGlobalVar : function(){},
         filterAll : function(){
             var filterData = {'id':""};
             if(this.filterValue === undefined || this.filterValue === ""){}

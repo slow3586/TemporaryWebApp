@@ -33,12 +33,7 @@ public class AssignmentService implements AssignmentServiceLocal {
                     filterAuthor, filterExecuteby, 
                     filterExecuteattr, filterExecutors);
         }
-        
-        @Override
-        public List<Integer> getAssignmentExecutorsIds(int id){
-            return DAO.getAssignmentExecutorsIds(id);
-        }
-        
+
         @Override
         public void create(AssignmentDTO assignment){
             DAO.create(assignment);

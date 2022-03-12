@@ -7,6 +7,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
 
+/**
+ * Delivers the index page to the client.
+ */
 @Path("")
 public class IndexPageController {
 @Inject

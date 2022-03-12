@@ -1,8 +1,9 @@
 define([
+        "dojo/_base/kernel",
         "mydojo/base_tab_all",
         "mydojo/employee_tab_edit"
 ], function(
-        BaseTabAll, EmployeeTabEdit
+        kernel, BaseTabAll, EmployeeTabEdit
 ){
     var instance = null;
     return function(){
@@ -23,6 +24,9 @@ define([
                     { field: 'middlename', label: 'Middle Name'}, 
                     { field: 'position', label: 'Position'} 
                 ],
+                assignGlobalVar: function(){
+                    kernel.global.employeeTabAllInstance = this;
+                },
                 onClose : function(){
                     instance = null;
                     return true;

@@ -4,15 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.DateFormatter;
-import java.util.Date;
 
+/**
+ * Utility class that parses POJOs to JSON.
+ */
 public class JsonUtil {
+    /**
+    * Jackson ObjectMapper singleton.
+    */
     private static ObjectMapper json;
-    public static ObjectMapper getInstance(){
+    private static ObjectMapper getInstance(){
         if(json == null){
             json = new ObjectMapper();
             json.registerModule(new JavaTimeModule());
@@ -20,6 +23,12 @@ public class JsonUtil {
         }
         return json;
     }
+    
+    /**
+     * Parse java object to JSON.
+     * @param o java object
+     * @return String JSON string.
+     */
     public static String tojson(Object o){
         try {
             return getInstance().writeValueAsString(o);
