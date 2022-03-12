@@ -61,16 +61,17 @@ define([
             this.addChild(searchoptcb);
             var searchtb = new TextBox({
                 label: "Search",
-                onChange: function(newValue){
-                    self.filterValue = searchtb.get("value");
-                    self.filterAll();
-                },
-                onKeyUp: function(event){
+            });
+            this.addChild(searchtb);
+            
+            this.addChild(new Button({
+                label: "Search",
+                onClick: function(){
                     self.filterValue = searchtb.get("value");
                     self.filterAll();
                 }
-            });
-            this.addChild(searchtb);
+            }));
+            
             this.addChild(grid);
             kernel.global.mainTabContainer.addChild(this);
             grid.startup();
@@ -91,20 +92,22 @@ define([
             }
             this.grid.set("collection", this.gridData.filter(filterData));
         },
-
         openDeleteDialog : function(){
-            if(this.gridSelectedRow===undefined) return;
-
+            //this._openDeleteDialog(titleText, contentText, rowId);
+        },
+        _openDeleteDialog : function(titleText, contentText, rowId){
+            if(this.selectedRow===undefined) return;
+            var self = this;
             var dialog = new Dialog({
-                title: "Delete assignment "+this.gridSelectedRow.data.topic,
-                content: "Are you sure you want to delete "+this.gridSelectedRow.data.topic+"?"
+                title: titleText,
+                content: contentText
             });
             dialog.addChild(new Button({
                 label: "Yes",
                 onClick: function(){
-                    this.grid.collection.remove(this.gridSelectedRow.data.id);
+                    self.gridData.remove(rowId);
                     dialog.hide();
-                    this.grid.refresh();
+                    self.grid.refresh();
                 }
             }));
             dialog.addChild(new Button({
@@ -116,7 +119,6 @@ define([
 
             dialog.show();
         },
-
         createGrid : function(){
             var self = this;
             

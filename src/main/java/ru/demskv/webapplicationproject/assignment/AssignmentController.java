@@ -32,7 +32,6 @@ public class AssignmentController {
     private AssignmentServiceLocal service;
     
     @GET
-    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @Min(0) @QueryParam("from") int from,
@@ -46,13 +45,16 @@ public class AssignmentController {
             @QueryParam("executeattr") String filterExecuteattr,
             @QueryParam("executors") Set<Integer> filterExecutors
     ) {
+        logger.debug("Received  @GET at api/assignment");
+        logger.debug("Params: from={} limit={} orderBy={} filterId={} filterTopic={} filterText={} filterAuthor={} filterExecuteby={} filterExecuteattr={} filterExecutors={}",
+                from, limit, orderBy, filterId, filterTopic, filterText, filterAuthor, filterExecuteby, filterExecuteattr, filterExecutors);
         
         //Parse orderBy param
         //Example: +id, -id, +name, -name
         //+ is ASC, - is DESC
         boolean orderDesc = false;
         String columnName = "id";
-        if(orderBy!=null && !orderBy.isBlank()){
+        if(orderBy!=null && !orderBy.isEmpty()){
             orderDesc = !orderBy.substring(0, 1).equals("-");
             columnName = orderBy.substring(1);
         }
@@ -77,7 +79,6 @@ public class AssignmentController {
     }
     
     @POST
-    @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response post(@Valid AssignmentDTO assignment) {
         service.create(assignment);

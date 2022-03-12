@@ -14,6 +14,7 @@ require([
         //LOCAL
         "mydojo/assignment_tab_all",
         "mydojo/assignment_tab_by_me",
+        "mydojo/assignment_tab_for_me",
         "mydojo/employee_tab_all",
         "mydojo/organization_tab_all",
         "dojo/domReady!",
@@ -24,7 +25,7 @@ require([
         BorderContainer, TabContainer, MenuBar, DropDownMenu, MenuItem, 
         PopupMenuBarItem, ObjectStoreModel, Tree,
         //LOCAL
-        AssignmentTabAll, AssignmentTabByMe, EmployeeTabAll, OrganizationTabAll
+        AssignmentTabAll, AssignmentTabByMe, AssignmentTabForMe, EmployeeTabAll, OrganizationTabAll
 ){
     //
     //  Initialization
@@ -110,7 +111,7 @@ require([
         else if(item.id==='assignments_by_me')
             AssignmentTabByMe();
         else if(item.id==='assignments_for_me')
-            AssignmentTabAll();
+            AssignmentTabForMe();
         else if(item.id==='organizations')
             OrganizationTabAll();
         else if(item.id==='employees')

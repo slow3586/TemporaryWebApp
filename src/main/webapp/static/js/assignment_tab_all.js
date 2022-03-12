@@ -35,6 +35,11 @@ define([
                 assignGlobalVar: function(){
                     kernel.global.assignmentTabAllInstance = this;
                 },
+                openDeleteDialog : function(){
+                    this._openDeleteDialog("Delete "+this.selectedRow.data.topic, 
+                        "Are you sure you want to delete "+this.selectedRow.data.topic+"?", 
+                        this.selectedRow.data.id);
+                },
                 filterAll : function(){
                     var filterData = {'id':""};
                     if(this.filterValue === undefined || this.filterValue === ""){}

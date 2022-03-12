@@ -27,7 +27,6 @@ public class OrganizationController {
     private OrganizationServiceLocal service;
     
     @GET
-    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
             @Min(0) @QueryParam("from") int from,
@@ -41,7 +40,7 @@ public class OrganizationController {
     ) {
         boolean orderDesc = false;
         String columnName = "id";
-        if(orderBy!=null && !orderBy.isBlank()){
+        if(orderBy!=null && !orderBy.isEmpty()){
             orderDesc = !orderBy.substring(0, 1).equals("-");
             columnName = orderBy.substring(1);
         }
@@ -54,7 +53,6 @@ public class OrganizationController {
     }
     
     @POST
-    @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response post(@Valid OrganizationDTO in) {
         service.create(in);

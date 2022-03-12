@@ -8,16 +8,16 @@ import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
 
 /**
- * Delivers the index page to the client.
+ * Controller class that delivers the index page to the client.
  */
 @Path("")
 public class IndexPageController {
-@Inject
+    
+    @Inject
     ServletContext context;
     
     @GET
-    @Path("")
-    public Response staticResources() {
+    public Response get() {
         final InputStream resource = context.
                 getResourceAsStream("/static/index.html");
         return null == resource

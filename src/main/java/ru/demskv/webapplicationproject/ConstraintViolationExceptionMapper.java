@@ -7,8 +7,8 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 /**
- *  Triggers on violations of entity constraints, for example when passing
- *  incorrect JSON data or JAX-RS queries.
+ *  Exception class that triggers on violations of entity constraints, 
+ *  for example when passing incorrect JSON data or JAX-RS queries.
  */
 @Provider
 public class ConstraintViolationExceptionMapper

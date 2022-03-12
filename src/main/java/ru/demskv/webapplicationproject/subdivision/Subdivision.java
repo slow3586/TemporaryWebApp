@@ -1,4 +1,3 @@
-
 package ru.demskv.webapplicationproject.subdivision;
 
 import java.io.Serializable;
@@ -10,28 +9,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import ru.demskv.webapplicationproject.employee.Employee;
-
 
 @Entity
 @Table(name = "subdivision")
 public class Subdivision implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "name")
     private String name;
+    
     @Basic(optional = false)
     @Column(name = "address")
     private String address;
+    
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Employee directorId;
@@ -90,7 +90,6 @@ public class Subdivision implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Subdivision)) {
             return false;
         }

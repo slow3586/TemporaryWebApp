@@ -81,14 +81,6 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setExecutors(l);
         assignment.setAuthor_id(dto.getAuthor_id());
         
-        System.out.println(assignment.getTopic());
-        System.out.println(assignment.getExecuteby());
-        System.out.println(assignment.getControlattr());
-        System.out.println(assignment.getExecuteattr());
-        System.out.println(assignment.getText());
-        System.out.println(assignment.getAuthor().getFirstname());
-        System.out.println(assignment.getExecutors().size());
-        
         entityManager.persist(assignment);
         entityManager.getTransaction().commit();
     }

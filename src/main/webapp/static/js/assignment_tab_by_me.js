@@ -13,7 +13,7 @@ define([
     return function(){
         if(instance === null){
             instance = new BaseTabAll({
-                title : "All assignments",
+                title : "Assignments by me",
                 restTarget: "api/assignment",
                 searchColumnChoices: [
                     {label:"Id", value:"id", selected:true},
@@ -21,19 +21,17 @@ define([
                     {label:"Text", value:"text"},
                     {label:"Status", value:"executeattr"},
                     {label:"Execute by", value:"executeby"},
-                    {label:"Executors", value:"executors"},
-                    {label:"Author", value:"author"}
+                    {label:"Executors", value:"executors"}
                 ], 
                 gridColumns :[{ field: 'id', label: 'ID'},
                     { field: 'topic', label: 'Topic' },
                     { field: 'text', label: 'Text'},
                     { field: 'executeattr', label: 'Status'},
                     { field: 'executeby', label: 'Execute by'},
-                    { field: 'executorsIds', label: 'Executors'},
-                    { field: 'authorId', label: 'Author'}
+                    { field: 'executorsIds', label: 'Executors'}
                 ],
                 assignGlobalVar: function(){
-                    kernel.global.assignmentTabAllInstance = this;
+                    kernel.global.assignmentTabByMeInstance = this;
                 },
                 filterAll : function(){
                     var filterData = {'id':""};
@@ -51,30 +49,14 @@ define([
                             filterData = {'executeby':this.filterValue};
                         }else if(this.filterColumn==="executorsIds"){
                             filterData = {'executorsIds':this.filterValue};
-                        }else if(this.filterColumn==="authorId"){
-                            filterData = {'authorId':this.filterValue};
                         }
                     }
+                    filterData.authorId=1;
                     this.grid.set("collection", this.gridData.filter(filterData));
                 },
                 onGridUpdate: function(){
                     var employeeIds = Array();
                     var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
-                    query(".field-authorId").forEach(function(node){
-                        if(domAttr.get(node, "role")==="gridcell"){
-                            var ids = node.innerText.split(",");
-                            node.innerText = "";
-                            for(let i=0; i<ids.length; i++){
-                                if(employeeIds.includes(ids[i])){
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
-                                }else{
-                                    employeeIds.push(ids[i]);
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
-                                }
-                            }
-                        }
-                    });
                     query(".field-executorsIds").forEach(function(node){
                         if(domAttr.get(node, "role")==="gridcell"){
                             var ids = node.innerText.split(",");
