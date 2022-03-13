@@ -9,15 +9,20 @@ define([
         "mydojo/base_tab_all",
         "mydojo/assignment_tab_edit",
 ], function(
+        //DOJO
         kernel, request, query, domAttr,
+        //LOCAL
         i18, BaseTabAll, AssignmentTabEdit
 ){    
+    //Tab singleton instance
     var instance = null;
+    
+    //Return new instance if there is none
     return function(){
         if(instance === null){
             instance = new BaseTabAll({
                 //Tab title
-                title : assignment_by_me_title,
+                title : i18.assignment_by_me_title,
                 
                 //Rest path
                 restTarget: "api/assignment",
@@ -133,12 +138,6 @@ define([
                             }
                         );
                     }
-                },
-                
-                //Delete instance on tab close
-                onClose : function(){
-                    instance = null;
-                    return true;
                 },
                 
                 //Opens a new item tab on add button click

@@ -25,7 +25,7 @@ define([
                 //Tab title
                 title : i18.assignment_all_title,
                 
-                //Rest path
+                //REST path
                 restTarget: "api/assignment",
                 
                 //Columns list for the filter selection

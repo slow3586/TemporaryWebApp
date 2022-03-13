@@ -1,4 +1,5 @@
 define([
+        //DOJO
         "dojo/_base/declare",
         "dojo/_base/kernel",
         "dojo/aspect",
@@ -13,11 +14,16 @@ define([
         'dgrid/Grid',
         'dgrid/Selection',
         'dgrid/extensions/Pagination',
+        //LOCAL
+        "dojo/i18n!mydojo/nls/everything",
 ], function(
+        //DOJO
         declare, kernel, aspect, 
         ContentPane, Button, Select, TextBox, Dialog,
         Rest, SimpleQuery, Trackable, 
         Grid, Selection, Pagination,
+        //LOCAL
+        i18
 ){
     return declare("BaseTabAll", [ContentPane], {
         title: "BaseTabAll",
@@ -31,20 +37,20 @@ define([
             var self = this;
             
             this.addChild(new Button({
-                label: "Add",
+                label: i18.base_tab_all_add,
                 onClick: function(){self.openAddTab()}
             }));
             this.addChild(new Button({
-                label: "Edit",
+                label: i18.base_tab_all_edit,
                 onClick: function(){self.openEditTab()}
             }));
             this.addChild(new Button({
-                label: "Delete",
+                label: i18.base_tab_all_delete,
                 onClick: function(){self.openDeleteDialog()}
             }));
             var grid = this.createGrid();
             this.addChild(new Button({
-                label: "Update",
+                label: i18.base_tab_all_update,
                 onClick: function(){
                     self.grid.refresh();
                 }
@@ -60,12 +66,12 @@ define([
             });
             this.addChild(searchoptcb);
             var searchtb = new TextBox({
-                label: "Search",
+                label: "Search"
             });
             this.addChild(searchtb);
             
             this.addChild(new Button({
-                label: "Search",
+                label: i18.base_tab_all_search,
                 onClick: function(){
                     self.filterValue = searchtb.get("value");
                     self.filterAll();
@@ -103,7 +109,7 @@ define([
                 content: contentText
             });
             dialog.addChild(new Button({
-                label: "Yes",
+                label: i18.base_yes,
                 onClick: function(){
                     self.gridData.remove(rowId);
                     dialog.hide();
@@ -111,7 +117,7 @@ define([
                 }
             }));
             dialog.addChild(new Button({
-                label: "Cancel",
+                label: i18.base_cancel,
                 onClick: function(){
                     dialog.hide();
                 }
@@ -139,8 +145,8 @@ define([
                 firstLastArrows: true,
                 pageSizeOptions: [10, 20, 30, 40, 50],
                 columns: this.gridColumns,
-                loadingMessage: 'Loading data...',
-                noDataMessage: 'No results found.'
+                loadingMessage: i18.base_tab_all_loading_data,
+                noDataMessage: i18.base_tab_all_no_data
             });
             aspect.after(this.grid, 'gotoPage', function (promise, args) {
                 promise.then(function () {

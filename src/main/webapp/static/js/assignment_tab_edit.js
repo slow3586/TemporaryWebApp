@@ -1,4 +1,5 @@
 define([
+        //DOJO
         "dojo/_base/declare",
         "dojo/_base/kernel",
         "dojo/dom-class",
@@ -6,51 +7,54 @@ define([
         "dijit/form/TextBox",
         "dijit/form/Textarea",
         "dijit/form/Button",
-        "mydojo/assignment_tab_all",
+        //LOCAL
+        "dojo/i18n!mydojo/nls/everything",
+        "mydojo/assignment_tab_all"
 ], function(
+        //DOJO
         declare, kernel, domClass, 
         ContentPane, TextBox, TextArea, Button,
-        AssignmentTabAll
+        //LOCAL
+        i18, AssignmentTabAll
 ){
 
     return declare("AssignmentEditTab", [ContentPane], {
-        title: "New assignment",
+        title: i18.assignment_edit_title_new,
         closable: true,
         isEditing: false,
-        rowData: "",
         postCreate: function(){
             var self = this;
             
             var tbid = new TextBox({value:"", disabled:"true"});
 
-            var cp = new ContentPane({content:"Topic:"});
+            var cp = new ContentPane({content:i18.assignment_all_column_topic});
             var tbtopic = new TextBox();
             cp.addChild(tbtopic);
             this.addChild(cp);
 
             var tbauthor_id = new TextBox({disabled:"true"});
 
-            cp = new ContentPane({content:"Author:"});
+            cp = new ContentPane({content:i18.assignment_all_column_author});
             var tbauthor = new TextBox({disabled:"true"});
             cp.addChild(tbauthor);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Status:"});
+            cp = new ContentPane({content:i18.assignment_all_column_status});
             var tbstatus = new TextBox({disabled:"true"});
             cp.addChild(tbstatus);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Execute by:"});
+            cp = new ContentPane({content:i18.assignment_all_column_execute_by});
             var tbexecuteby = new TextBox({disabled:"true"});
             cp.addChild(tbexecuteby);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Executors:"});
+            cp = new ContentPane({content:i18.assignment_all_column_executors});
             var tbexecutors = new TextBox({disabled:"true"});
             cp.addChild(tbexecutors);
             this.addChild(cp);
 
-            cp = new ContentPane({content:"Text:"});
+            cp = new ContentPane({content:i18.assignment_all_column_text});
             var tbtext = new TextArea();
             domClass.add(tbtext.domNode, "bigTextBox");
             cp.addChild(tbtext);
@@ -62,11 +66,11 @@ define([
                 tbtext.set("value", this.rowData.data.text);
                 tbauthor.set("value", this.rowData.data.author_id);
                 tbauthor_id.set("value", this.rowData.data.author_id);
-                this.set("title", "Edit assignment: "+this.rowData.data.topic);
+                this.set("title", i18.assignment_edit_title_edit+": "+this.rowData.data.topic);
             }
 
             this.addChild(new Button({
-                label: this.isEditing ? "Save" : "Create",
+                label: this.isEditing ? i18.base_tab_edit_save : i18.base_tab_edit_create,
                 onClick: function(){
                     var adata = {
                         topic: tbtopic.get("value"),

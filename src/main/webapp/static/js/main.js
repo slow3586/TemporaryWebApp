@@ -29,17 +29,13 @@ require([
         i18, AssignmentTabAll, AssignmentTabByMe, AssignmentTabForMe, EmployeeTabAll, OrganizationTabAll
 ){
     //
-    //  Initialization
+    //  Main application initialization
     //
     
-    //
-    //  Border container    -   Init
-    //
+    // Init main border container
     kernel.global.mainBorderContainer = new BorderContainer({style: "height: 100%; width:100%;", liveSplitters:true, gutter:true});
 
-    //
-    //  Menu bar    -   Languages
-    //
+    // Init menu bar with language choices
     var menu = new MenuBar({region: "top"});
     var subMenu = new DropDownMenu({});
     subMenu.addChild(new MenuItem({
@@ -54,15 +50,11 @@ require([
     }));
     kernel.global.mainBorderContainer.addChild(menu);
 
-    //
-    //  Tab container   -   Init
-    //
+    // Init main tab container
     kernel.global.mainTabContainer = new TabContainer({region: "center"});
     kernel.global.mainBorderContainer.addChild(kernel.global.mainTabContainer);
 
-    //
-    //  Tree menu   -   Init memory
-    //
+    // Init tree menu memory
     var treeMenuMemory = new Memory({
         data: [
             { id: 'root', name: 'root', root:true, type:'folder'},
@@ -84,9 +76,7 @@ require([
         }
     });
 
-    //
-    //  Tree menu   -   Init model
-    //
+    // Init tree model
     var treeMenuModel = new ObjectStoreModel({
         store: treeMenuMemory,
         query: {id: 'root'},
@@ -96,9 +86,7 @@ require([
         }
     });
 
-    //
-    //  Tree menu   -   Init tree
-    //
+    // Init tree menu
     var tree = new Tree({
         model: treeMenuModel,
         region: "left",
@@ -106,9 +94,7 @@ require([
     });
     kernel.global.mainBorderContainer.addChild(tree);
     
-    //
-    //  Tree menu   -   Click events
-    //
+    // Set up tree menu click events
     tree.onClick = function(item, node, event){
         if(item.id==='assignments_all')
             AssignmentTabAll();
@@ -122,10 +108,7 @@ require([
             EmployeeTabAll();
     }
 
-    //
-    //  Start everything
-    //
+    // Start everything
     document.body.appendChild(kernel.global.mainBorderContainer.domNode);
     kernel.global.mainBorderContainer.startup();   
-    
 });

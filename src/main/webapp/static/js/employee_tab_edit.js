@@ -1,42 +1,45 @@
 define([
+        //DOJO
         "dojo/_base/declare",
         "dojo/_base/kernel",
-        "dojo/dom-class",
         "dijit/layout/ContentPane",
         "dijit/form/TextBox",
-        "dijit/form/Textarea",
-        "dijit/form/Button"
+        "dijit/form/Button",
+        //LOCAL
+        "dojo/i18n!mydojo/nls/everything"
 ], function(
-        declare, kernel, domClass, 
-        ContentPane, TextBox, TextArea, Button
+        //DOJO
+        declare, kernel,
+        ContentPane, TextBox, Button,
+        //LOCAL
+        i18
 ){
 
     return declare("EmployeeTabEdit", [ContentPane], {
-        title: "New employee",
+        title: i18.employee_edit_title_new,
         closable: true,
         isEditing: false,
-        rowData: "",
         postCreate: function(){
             var self = this;
             
             var tbid = new TextBox({value:"", disabled:"true"});
 
-            var cp = new ContentPane({content:"First name:"});
+            var cp = new ContentPane({content:i18.employee_all_column_firstname});
             var tbfirstname = new TextBox();
             cp.addChild(tbfirstname);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Last name:"});
+            cp = new ContentPane({content:i18.employee_all_column_lastname});
             var tblastname = new TextBox();
             cp.addChild(tblastname);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Middle name:"});
+            cp = new ContentPane({content:i18.employee_all_column_middlename});
             var tbmiddlename = new TextBox();
             cp.addChild(tbmiddlename);
             this.addChild(cp);
             
-            cp = new ContentPane({content:"Position:"});
+            cp = new ContentPane({content:i18.employee_all_column_position});
             var tbposition = new TextBox();
             cp.addChild(tbposition);
             this.addChild(cp);
@@ -47,11 +50,11 @@ define([
                 tblastname.set("value", this.rowData.data.lastname);
                 tbmiddlename.set("value", this.rowData.data.middlename);
                 tbposition.set("value", this.rowData.data.position);
-                this.set("title", "Edit employee: "+this.rowData.data.firstname+" "+this.rowData.data.lastname);
+                this.set("title", i18.employee_edit_title_edit+" "+this.rowData.data.firstname+" "+this.rowData.data.lastname);
             }
 
             this.addChild(new Button({
-                label: this.isEditing ? "Save" : "Create",
+                label: this.isEditing ? i18.base_tab_edit_save : i18.base_tab_edit_create,
                 onClick: function(){
                     var adata = {
                         firstname: tbfirstname.get("value"),
