@@ -3,7 +3,7 @@
   <persistence-unit name="mysql" transaction-type="JTA">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>jdbc/wde_mysql</jta-data-source>
-    <class>ru.demskv.webapplicationproject.Assignment</class>
+    <class>com.demskv.webassignmenteditor.Assignment</class>
     <properties>
         <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>

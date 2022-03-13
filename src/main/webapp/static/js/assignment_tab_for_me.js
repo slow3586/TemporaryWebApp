@@ -57,7 +57,7 @@ define([
                 onGridUpdate: function(){
                     var employeeIds = Array();
                     var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
-                    query(".field-executorsIds").forEach(function(node){
+                    query(".field-authorId").forEach(function(node){
                         if(domAttr.get(node, "role")==="gridcell"){
                             var ids = node.innerText.split(",");
                             node.innerText = "";
