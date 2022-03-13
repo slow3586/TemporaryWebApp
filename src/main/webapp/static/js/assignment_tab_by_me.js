@@ -1,16 +1,13 @@
 define([
         //DOJO
         "dojo/_base/kernel",
-        "dojo/request",
-        "dojo/query",
-        "dojo/dom-attr",
         //LOCAL
         "dojo/i18n!mydojo/nls/everything",
         "mydojo/base_tab_all",
         "mydojo/assignment_tab_edit",
 ], function(
         //DOJO
-        kernel, request, query, domAttr,
+        kernel,
         //LOCAL
         i18, BaseTabAll, AssignmentTabEdit
 ){    
@@ -43,7 +40,7 @@ define([
                     { field: 'text', label: i18.assignment_all_column_text},
                     { field: 'executeattr', label: i18.assignment_all_column_status},
                     { field: 'executeby', label: i18.assignment_all_column_execute_by},
-                    { field: 'executorsIds', label: i18.assignment_all_column_executors}
+                    { field: 'executors_ids', label: i18.assignment_all_column_executors}
                 ],
                 
                 //Saves the tab instance to a global variable.
@@ -96,48 +93,7 @@ define([
                 //this function replaces author and executor ids
                 //with their respective first and last names for clarity.
                 onGridUpdate: function(){
-                    
-                    //A list of unique employee IDs that exist in the grid.
-                    var employeeIds = Array();
-                    
-                    //A mapping of employee IDs to cells that have them.
-                    var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
-                    
-                    //Iterate executor id cells.
-                    query(".field-executorsIds").forEach(function(node){
-                        if(domAttr.get(node, "role")==="gridcell"){
-                            
-                            //Get IDs from cell and clear it.
-                            var ids = node.innerText.split(",");
-                            node.innerText = "";
-                            
-                            //Iterate ids, put them in the list, map nodes
-                            for(let i=0; i<ids.length; i++){
-                                if(employeeIds.includes(ids[i])){
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
-                                }else{
-                                    employeeIds.push(ids[i]);
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
-                                    employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
-                                }
-                            }
-                        }
-                    });
-                    
-                    //After we're done collecting the IDs,
-                    //send ajax request to get the employee data
-                    //and put the names in the cells
-                    for(let i=0; i<employeeIds.length; i++){
-                        request("api/employee?id="+employeeIds[i]+"&limit=1").then(
-                            function(data){
-                                //Data will be a list, get first item
-                                var e = JSON.parse(data)[0];
-                                for(let j=0; j<employeeNodeMap[i].length; j++){
-                                    employeeNodeMap[i][j].innerText += e.firstname + " " + e.lastname + " ";
-                                }  
-                            }
-                        );
-                    }
+                    this.replaceIdsWithEmployees(".field-executors_ids");
                 },
                 
                 //Opens a new item tab on add button click

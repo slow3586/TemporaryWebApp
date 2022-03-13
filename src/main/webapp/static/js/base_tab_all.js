@@ -3,6 +3,9 @@ define([
         "dojo/_base/declare",
         "dojo/_base/kernel",
         "dojo/aspect",
+        "dojo/request",
+        "dojo/query",
+        "dojo/dom-attr",
         "dijit/layout/ContentPane", 
         "dijit/form/Button",
         "dijit/form/Select",
@@ -18,7 +21,7 @@ define([
         "dojo/i18n!mydojo/nls/everything",
 ], function(
         //DOJO
-        declare, kernel, aspect, 
+        declare, kernel, aspect, request, query, domAttr, 
         ContentPane, Button, Select, TextBox, Dialog,
         Rest, SimpleQuery, Trackable, 
         Grid, Selection, Pagination,
@@ -28,14 +31,19 @@ define([
     return declare("BaseTabAll", [ContentPane], {
         title: "BaseTabAll",
         closable: true,
+        
+        //Base empty values
         filterColumn : "id",
         grid: "",
         gridData: "",
         selectedRow: "",
         filterValue: "",
+        
+        //Init tab
         postCreate : function(){
             var self = this;
             
+            //Top menu buttons
             this.addChild(new Button({
                 label: i18.base_tab_all_add,
                 onClick: function(){self.openAddTab()}
@@ -56,6 +64,7 @@ define([
                 }
             }));
 
+            //Search options combo box
             var searchoptcb = new Select({
                 options: self.searchColumnChoices,
                 value: "id",
@@ -65,11 +74,14 @@ define([
                 }
             });
             this.addChild(searchoptcb);
+            
+            //Search text box
             var searchtb = new TextBox({
                 label: "Search"
             });
             this.addChild(searchtb);
             
+            //Search button
             this.addChild(new Button({
                 label: i18.base_tab_all_search,
                 onClick: function(){
@@ -78,12 +90,13 @@ define([
                 }
             }));
             
+            //Start up
             this.addChild(grid);
             kernel.global.mainTabContainer.addChild(this);
             grid.startup();
             this.assignGlobalVar();
         },
-        assignGlobalVar : function(){},
+        
         filterAll : function(){
             var filterData = {'id':""};
             if(this.filterValue === undefined || this.filterValue === ""){}
@@ -98,9 +111,58 @@ define([
             }
             this.grid.set("collection", this.gridData.filter(filterData));
         },
+        
+        replaceIdsWithEmployees : function(cellClasses){
+            //A list of unique employee IDs that exist in the grid.
+            var employeeIds = Array();
+
+            //A mapping of employee IDs to cells that have them.
+            var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
+
+            //Iterate author id cells.
+            query(".field-author_id,.field-executors_ids").forEach(function(node){
+                if(domAttr.get(node, "role")==="gridcell"){
+
+                    //Get IDs from cell and clear it.
+                    var ids = node.innerText.split(",");
+                    if(isNaN(ids[0])) return;
+                    node.innerText = "";
+
+                    //Iterate ids, put them in the list, map nodes
+                    for(let i=0; i<ids.length; i++){
+                        if(employeeIds.includes(ids[i])){
+                            employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                        }else{
+                            employeeIds.push(ids[i]);
+                            employeeNodeMap[employeeIds.indexOf(ids[i])] = Array();
+                            employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
+                        }
+                    }
+                }
+            });
+
+            //After we're done collecting the IDs,
+            //send ajax request to get the employee data
+            //and put the names in the cells
+            for(let i=0; i<employeeIds.length; i++){
+                request("api/employee?id="+employeeIds[i]+"&limit=1").then(
+                    function(data){
+                        //Data will be a list, get first item
+                        var e = JSON.parse(data)[0];
+                        for(let j=0; j<employeeNodeMap[i].length; j++){
+                            if(employeeNodeMap[i][j].innerText!=="")
+                                employeeNodeMap[i][j].innerText += ",";
+                            employeeNodeMap[i][j].innerText += " " + e.firstname + " " + e.lastname + " ";
+                        }  
+                    }
+                );
+            }
+        },
+        
         openDeleteDialog : function(){
             //this._openDeleteDialog(titleText, contentText, rowId);
         },
+        
         _openDeleteDialog : function(titleText, contentText, rowId){
             if(this.selectedRow===undefined) return;
             var self = this;
@@ -125,6 +187,7 @@ define([
 
             dialog.show();
         },
+        
         createGrid : function(){
             var self = this;
             
@@ -165,11 +228,10 @@ define([
             });
             return this.grid;
         },
-        onGridUpdate : function(){
-        },
-        openAddTab : function(){
-        },
-        openEditTab : function(){
-        }
+        
+        assignGlobalVar : function(){},
+        onGridUpdate : function(){},
+        openAddTab : function(){},
+        openEditTab : function(){}
     });
 });
