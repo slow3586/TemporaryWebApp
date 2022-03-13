@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import com.demskv.webassignmenteditor.employee.Employee;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Organization (Организация) entity class.
@@ -33,6 +35,7 @@ public class Organization implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "name")
+    @NotBlank
     private String name;
     
     /**
@@ -40,6 +43,7 @@ public class Organization implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "phys_address")
+    @NotBlank
     private String physAddress;
     
     /**
@@ -47,6 +51,7 @@ public class Organization implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "yur_address")
+    @NotBlank
     private String yurAddress;
     
     /**
@@ -54,6 +59,7 @@ public class Organization implements Serializable {
      */
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Employee director;
 
     public Organization() {

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Employee (Сотрудник) entity class.
@@ -30,6 +31,7 @@ public class Employee implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "lastname")
+    @NotBlank
     private String lastname;
     
     /**
@@ -37,6 +39,7 @@ public class Employee implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "firstname")
+    @NotBlank
     private String firstname;
     
     /**
@@ -50,6 +53,7 @@ public class Employee implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "position")
+    @NotBlank
     private String position;
 
     public Employee() {

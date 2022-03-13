@@ -19,6 +19,13 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Set;
 import com.demskv.webassignmenteditor.employee.Employee;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * Assignment (Поручение) entity class.
@@ -34,6 +41,7 @@ public class Assignment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @Positive
     private Integer id;
     
     /**
@@ -41,6 +49,7 @@ public class Assignment implements Serializable {
      */
     @Basic(optional = false)
     @Column(name = "topic")
+    @NotEmpty
     private String topic;   
     
     /**
@@ -48,18 +57,25 @@ public class Assignment implements Serializable {
      */
     @Column(name = "executeby")
     @Temporal(TemporalType.TIMESTAMP)
+    @Future
     private Date executeby;
     
     /**
      * Признак контрольности
      */
     @Column(name = "controlattr")
+    @Basic(optional = false)
+    @Min(0)
+    @Max(4)
     private Integer controlattr;
     
     /**
      * Признак исполнения
      */
     @Column(name = "executeattr")
+    @Basic(optional = false)
+    @Min(0)
+    @Max(4)
     private Integer executeattr;
     
     /**
@@ -67,6 +83,7 @@ public class Assignment implements Serializable {
      */
     @Lob
     @Column(name = "text")
+    @NotBlank
     private String text;
     
     /**
@@ -86,6 +103,7 @@ public class Assignment implements Serializable {
     private Employee author;
     
     @Column(name = "author_id")
+    @Basic(optional = false)
     private Integer authorId;
 
     public Assignment() {

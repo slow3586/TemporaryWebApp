@@ -5,13 +5,15 @@ define([
         "dijit/layout/ContentPane",
         "dijit/form/TextBox",
         "dijit/form/Button",
+        "dijit/Dialog",
+        "dijit/form/ValidationTextBox",
         //LOCAL
         "dojo/i18n!mydojo/nls/everything",
         "mydojo/organization_tab_all"
 ], function(
         //DOJO
         declare, kernel, 
-        ContentPane, TextBox, Button,
+        ContentPane, TextBox, Button, Dialog, ValidationTextBox,
         //LOCAL
         i18
 ){
@@ -26,22 +28,45 @@ define([
             var tbid = new TextBox({value:"", disabled:"true"});
 
             var cp = new ContentPane({content:i18.organization_column_name});
-            var tbname = new TextBox();
+            var tbname = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Name must not be empty or longer than 64 characters"
+            });
             cp.addChild(tbname);
             this.addChild(cp);
 
             cp = new ContentPane({content:i18.organization_column_yuraddress});
-            var tbyuraddress = new TextBox();
+            var tbyuraddress = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Yur address must not be empty or longer than 64 characters"
+            });
             cp.addChild(tbyuraddress);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.organization_column_physaddress});
-            var tbphysaddress = new TextBox();
+            var tbphysaddress = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Phys address must not be empty or longer than 64 characters"
+            });
             cp.addChild(tbphysaddress);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.organization_column_director});
-            var tbdirector = new TextBox();
+            var tbdirector = new ValidationTextBox({
+                regExpGen:function(constraints){
+                    return "\\d{1,10}";
+                },
+                invalidMessage:"This field must contain a single employee ID"
+            });
             cp.addChild(tbdirector);
             this.addChild(cp);
 

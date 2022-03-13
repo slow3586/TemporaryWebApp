@@ -5,12 +5,14 @@ define([
         "dijit/layout/ContentPane",
         "dijit/form/TextBox",
         "dijit/form/Button",
+        "dijit/Dialog",
+        "dijit/form/ValidationTextBox",
         //LOCAL
         "dojo/i18n!mydojo/nls/everything"
 ], function(
         //DOJO
         declare, kernel,
-        ContentPane, TextBox, Button,
+        ContentPane, TextBox, Button, Dialog, ValidationTextBox,
         //LOCAL
         i18
 ){
@@ -25,22 +27,46 @@ define([
             var tbid = new TextBox({value:"", disabled:"true"});
 
             var cp = new ContentPane({content:i18.employee_all_column_firstname});
-            var tbfirstname = new TextBox();
+            var tbfirstname = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"First name must not be empty or longer than 64 characters"
+            });
             cp.addChild(tbfirstname);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.employee_all_column_lastname});
-            var tblastname = new TextBox();
+            var tblastname = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Last name must not be empty or longer than 64 characters"
+            });
             cp.addChild(tblastname);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.employee_all_column_middlename});
-            var tbmiddlename = new TextBox();
+            var tbmiddlename = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Middle name must not be longer than 64 characters"
+            });
             cp.addChild(tbmiddlename);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.employee_all_column_position});
-            var tbposition = new TextBox();
+            var tbposition = new ValidationTextBox({
+                required:true,
+                validator:function(value, constraints){
+                    return value.length>0 && value.length<64;
+                },
+                invalidMessage:"Position must not be empty or longer than 64 characters"
+            });
             cp.addChild(tbposition);
             this.addChild(cp);
 
@@ -56,6 +82,14 @@ define([
             this.addChild(new Button({
                 label: this.isEditing ? i18.base_tab_edit_save : i18.base_tab_edit_create,
                 onClick: function(){
+                    if(!tbfirstname.isValid() || !tblastname.isValid() || !tbmiddlename.isValid() || !tbposition.isValid()){
+                        new Dialog({
+                            title: "Error",
+                            content: "One of the values is incorrect"
+                        }).show();
+                        return;
+                    }
+                    
                     var adata = {
                         firstname: tbfirstname.get("value"),
                         lastname: tblastname.get("value"),
