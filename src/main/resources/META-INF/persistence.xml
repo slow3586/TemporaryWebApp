@@ -3,15 +3,18 @@
   <persistence-unit name="mysql" transaction-type="JTA">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>jdbc/wde_mysql</jta-data-source>
-    <class>com.demskv.webassignmenteditor.Assignment</class>
+    <class>com.demskv.webassignmenteditor.assignment.Assignment</class>
+    <class>com.demskv.webassignmenteditor.organization.Organization</class>
+    <class>com.demskv.webassignmenteditor.employee.Employee</class>
+    <class>com.demskv.webassignmenteditor.subdivision.Subdivision</class>
     <properties>
         <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
-      <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="hibernate.connection.password" value="root"/>
-      <property name="hibernate.connection.url" value="jdbc/wde_mysql"/>
-      <property name="hibernate.connection.username" value="root"/>
-      <property name="hibernate.default_schema" value="webdocumenteditor"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+        <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="hibernate.connection.password" value="root"/>
+        <property name="hibernate.connection.url" value="jdbc/wde_mysql"/>
+        <property name="hibernate.connection.username" value="root"/>
+        <property name="hibernate.default_schema" value="webdocumenteditor"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
     </properties>
   </persistence-unit>
 </persistence>

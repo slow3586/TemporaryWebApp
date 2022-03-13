@@ -35,21 +35,6 @@ require([
     // Init main border container
     kernel.global.mainBorderContainer = new BorderContainer({style: "height: 100%; width:100%;", liveSplitters:true, gutter:true});
 
-    // Init menu bar with language choices
-    var menu = new MenuBar({region: "top"});
-    var subMenu = new DropDownMenu({});
-    subMenu.addChild(new MenuItem({
-        label: i18.lang_english
-    }));
-    subMenu.addChild(new MenuItem({
-        label: i18.lang_russian
-    }));
-    menu.addChild(new PopupMenuBarItem({
-        label: i18.lang_language,
-        popup: subMenu
-    }));
-    kernel.global.mainBorderContainer.addChild(menu);
-
     // Init main tab container
     kernel.global.mainTabContainer = new TabContainer({region: "center"});
     kernel.global.mainBorderContainer.addChild(kernel.global.mainTabContainer);

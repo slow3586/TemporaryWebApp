@@ -75,7 +75,7 @@ define([
                 tbname.set("value", this.rowData.data.name);
                 tbyuraddress.set("value", this.rowData.data.yurAddress);
                 tbphysaddress.set("value", this.rowData.data.physAddress);
-                tbdirector.set("value", this.rowData.data.directorId);
+                tbdirector.set("value", this.rowData.data.director);
                 this.set("title", i18.organization_edit_title_edit+this.rowData.data.name);
             }
 

@@ -83,6 +83,8 @@ define([
                 tbtext.set("value", this.rowData.data.text);
                 tbstatus.set("value", this.rowData.data.executeattr);
                 tbauthor.set("value", this.rowData.data.author_id);
+                tbexecuteby.set("value", this.rowData.data.executeby);
+                tbexecutors.set("value", this.rowData.data.executors_ids);
                 tbauthor_id.set("value", this.rowData.data.author_id);
                 this.set("title", i18.assignment_edit_title_edit+": "+this.rowData.data.topic);
             }
