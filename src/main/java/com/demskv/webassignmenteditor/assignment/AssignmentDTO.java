@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import com.demskv.webassignmenteditor.employee.Employee;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Assignment (Поручение) data transfer object.
@@ -16,12 +20,14 @@ public class AssignmentDTO {
     private String topic;   
     @JsonFormat(pattern = "HH:mm dd.MM.yyyy", timezone = "UTC")
     private Date executeby;
+    private String executebyAsString;
     private Integer controlattr;
     private Integer executeattr;
     private String text;
-    private Integer author_id;
-    private Set<Integer> executors_ids;
-
+    private Integer author;
+    private Set<Integer> executors;
+    private static final SimpleDateFormat df = new SimpleDateFormat( "HH:mm dd.MM.yyyy" );
+    
     public AssignmentDTO() {
     }
     
@@ -32,12 +38,12 @@ public class AssignmentDTO {
         this.controlattr = controlattr;
         this.executeattr = executeattr;
         this.text = text;
-        this.author_id = authorId;
+        this.author = authorId;
         Set<Integer> ids = new HashSet<>();
         for (Employee e : executorsIds) {
             ids.add(e.getId());
         }
-        this.executors_ids = ids;
+        this.executors = ids;
     }
 
     public Integer getId() {
@@ -57,6 +63,13 @@ public class AssignmentDTO {
     }
 
     public Date getExecuteby() {
+        if(executeby==null && executebyAsString!=null){
+            try {
+                executeby = df.parse(executebyAsString);
+            } catch (ParseException ex) {
+                Logger.getLogger(AssignmentDTO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return executeby;
     }
 
@@ -88,20 +101,28 @@ public class AssignmentDTO {
         this.text = text;
     }
 
-    public Integer getAuthor_id() {
-        return author_id;
+    public Integer getAuthor() {
+        return author;
     }
 
-    public void setAuthor_id(Integer author_id) {
-        this.author_id = author_id;
+    public void setAuthor(Integer author) {
+        this.author = author;
     }
 
-    public Set<Integer> getExecutors_ids() {
-        return executors_ids;
+    public Set<Integer> getExecutors() {
+        return executors;
     }
 
-    public void setExecutors_ids(Set<Integer> executors_ids) {
-        this.executors_ids = executors_ids;
+    public void setExecutors(Set<Integer> executors) {
+        this.executors = executors;
+    }
+
+    public String getExecutebyAsString() {
+        return executebyAsString;
+    }
+
+    public void setExecutebyAsString(String executebyAsString) {
+        this.executebyAsString = executebyAsString;
     }
     
     

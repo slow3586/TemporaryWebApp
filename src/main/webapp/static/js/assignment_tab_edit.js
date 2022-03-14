@@ -9,12 +9,13 @@ define([
         "dijit/form/Button",
         "dijit/Dialog",
         "dijit/form/ValidationTextBox",
+        "dijit/form/Select",
         //LOCAL
         "dojo/i18n!mydojo/nls/everything",
 ], function(
         //DOJO
         declare, kernel, domClass, 
-        ContentPane, TextBox, TextArea, Button, Dialog, ValidationTextBox,
+        ContentPane, TextBox, TextArea, Button, Dialog, ValidationTextBox, Select,
         //LOCAL
         i18
 ){
@@ -39,8 +40,6 @@ define([
             cp.addChild(tbtopic);
             this.addChild(cp);
 
-            var tbauthor_id = new TextBox({disabled:"true"});
-
             cp = new ContentPane({content:i18.assignment_all_column_author});
             var tbauthor  = new ValidationTextBox({
                 regExpGen:function(constraints){
@@ -50,24 +49,37 @@ define([
             });
             cp.addChild(tbauthor);
             this.addChild(cp);
-            
+
             cp = new ContentPane({content:i18.assignment_all_column_status});
-            var tbstatus = new ValidationTextBox({
-                regExpGen:function(constraints){
-                    return "[0123]";
-                },
-                invalidMessage:"Status must be a number from 0 to 3"
+            var tbstatus = new Select({
+                options: [
+                    {label:"Created", value:"0"},
+                    {label:"Assigned", value:"1"},
+                    {label:"Accepted", value:"2"},
+                    {label:"Executed", value:"3"}
+                ],
+                value: "0",
             });
             cp.addChild(tbstatus);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.assignment_all_column_execute_by});
-            var tbexecuteby = new TextBox({disabled:"true"});
+            var tbexecuteby = new ValidationTextBox({
+                regExpGen:function(constraints){
+                    return "\\d{2}:\\d{2} \\d{2}\.\\d{2}\.\\d{4}";
+                },
+                invalidMessage:"Execute by must by a date formatted as HH:mm dd.MM.yyyy"
+            });
             cp.addChild(tbexecuteby);
             this.addChild(cp);
             
             cp = new ContentPane({content:i18.assignment_all_column_executors});
-            var tbexecutors = new TextBox({disabled:"true"});
+            var tbexecutors = new ValidationTextBox({
+                regExpGen:function(constraints){
+                    return "(\\d+,?)+";
+                },
+                invalidMessage:"Executors must be a list of employee IDs separated by ,"
+            });
             cp.addChild(tbexecutors);
             this.addChild(cp);
 
@@ -82,29 +94,30 @@ define([
                 tbtopic.set("value", this.rowData.data.topic);
                 tbtext.set("value", this.rowData.data.text);
                 tbstatus.set("value", this.rowData.data.executeattr);
-                tbauthor.set("value", this.rowData.data.author_id);
+                tbauthor.set("value", this.rowData.data.author);
                 tbexecuteby.set("value", this.rowData.data.executeby);
-                tbexecutors.set("value", this.rowData.data.executors_ids);
-                tbauthor_id.set("value", this.rowData.data.author_id);
-                this.set("title", i18.assignment_edit_title_edit+": "+this.rowData.data.topic);
+                tbexecutors.set("value", this.rowData.data.executors);
+                this.set("title", i18.assignment_edit_title_edit+this.rowData.data.topic);
             }
 
             this.addChild(new Button({
                 label: this.isEditing ? i18.base_tab_edit_save : i18.base_tab_edit_create,
                 onClick: function(){
-                    if(!tbtopic.isValid() || !tbauthor.isValid() || !tbstatus.isValid()){
+                    if(!tbtopic.isValid() || !tbauthor.isValid()  ||
+                            !tbexecutors.isValid() || !tbexecuteby.isValid()){
                         new Dialog({
                             title: "Error",
                             content: "One of the values is incorrect"
                         }).show();
                         return;
                     }
+                    
                     var adata = {
                         topic: tbtopic.get("value"),
                         text: tbtext.get("value"),
-                        author_id: "1",
-                        executors_ids: ["1", "2"],
-                        executeby: "2100-01-01T10:01:01Z",
+                        author: tbauthor.get("value"),
+                        executors: tbexecutors.get("value").split(","),
+                        executebyAsString: tbexecuteby.get("value"),
                         executeattr: tbstatus.get("value"),
                         controlattr: "0"
                     };

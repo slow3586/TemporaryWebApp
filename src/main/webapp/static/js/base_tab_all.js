@@ -118,14 +118,13 @@ define([
 
             //A mapping of employee IDs to cells that have them.
             var employeeNodeMap = new Array(1).fill(0).map(() => new Array(1).fill(0));
-
+        
             //Iterate author id cells.
-            query(".field-author_id,.field-executors_ids").forEach(function(node){
+            query(cellClasses).forEach(function(node){
                 if(domAttr.get(node, "role")==="gridcell"){
-
                     //Get IDs from cell and clear it.
                     var ids = node.innerText.split(",");
-                    if(isNaN(ids[0])) return;
+                    if(isNaN(ids[0]) || ids[0]==="") return;
                     node.innerText = "";
 
                     //Iterate ids, put them in the list, map nodes
@@ -138,6 +137,23 @@ define([
                             employeeNodeMap[employeeIds.indexOf(ids[i])].push(node);
                         }
                     }
+                }
+            });
+            
+            //Replace status ID with actual string - here for now
+            //TODO: move away
+            query(".field-executeattr").forEach(function(node){
+                if(domAttr.get(node, "role")==="gridcell"){
+                    var id = node.innerText;
+                    if(isNaN(id[0]) || id[0]==="") return;
+                    if(id==="0")
+                        node.innerText = "Created";
+                    if(id==="1")
+                        node.innerText = "Assigned";
+                    if(id==="2")
+                        node.innerText = "Accepted";
+                    if(id==="3")
+                        node.innerText = "Executed";
                 }
             });
 
@@ -219,6 +235,12 @@ define([
             });
             this.grid.on('dgrid-select', function (event) {
                 self.selectedRow = self.grid.row(event.rows[0]);
+            });
+            this.grid.on('dgrid-error', function (event) {
+                var dialog = new Dialog({
+                    title: "Data error",
+                    content: "There is a data error: "+event.error
+                });
             });
             this.grid.on('dgrid-deselect', function (event) {
                 self.selectedRow = undefined;

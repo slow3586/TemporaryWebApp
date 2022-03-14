@@ -94,6 +94,14 @@ public class AssignmentDAO implements AssignmentDAOLocal {
             cq.where(cb.like(root.<String>get("topic").as(String.class),"%"+filterTopic+"%"));
         if(filterText!=null)
             cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterText+"%"));
+        if(filterAuthor!=null)
+            cq.where(cb.equal(root.get("author").get("id"),filterAuthor));
+        if(filterExecutors!=null && !filterExecutors.isEmpty())
+            cq.where(root.join("executors").get("id").in(filterExecutors));
+        if(filterExecuteattr!=null)
+            cq.where(cb.equal(root.get("executeattr"),filterExecuteattr));
+        if(filterExecuteby!=null)
+            cq.where(cb.like(root.<String>get("text").as(String.class),"%"+filterText+"%"));
         
         //Convert assignments into DTOs
         List<Assignment> assignments = entityManager.createQuery(cq).setFirstResult(from).setMaxResults(limit).getResultList();
@@ -101,7 +109,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         for (Assignment a : assignments) {
             dtos.add(new AssignmentDTO(
                     a.getId(), a.getTopic(), a.getExecuteby(), 
-                    a.getExecuteattr(),a.getControlattr(), a.getText(), 
+                    a.getControlattr(),a.getExecuteattr(), a.getText(), 
                     a.getAuthor().getId(), a.getExecutors()));
         }
         
@@ -123,12 +131,12 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
-        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor_id()));
-        Set<Employee> l = new HashSet<>(dto.getExecutors_ids().size());
-        for (Integer eid : dto.getExecutors_ids())
+        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor()));
+        Set<Employee> l = new HashSet<>(dto.getExecutors().size());
+        for (Integer eid : dto.getExecutors())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
-        assignment.setAuthorId(dto.getAuthor_id());
+        assignment.setAuthorId(dto.getAuthor());
         
         entityManager.persist(assignment);
         entityManager.getTransaction().commit();
@@ -149,9 +157,9 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
-        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor_id()));
-        Set<Employee> l = new HashSet<>(dto.getExecutors_ids().size());
-        for (Integer eid : dto.getExecutors_ids())
+        assignment.setAuthor(entityManager.getReference(Employee.class, dto.getAuthor()));
+        Set<Employee> l = new HashSet<>(dto.getExecutors().size());
+        for (Integer eid : dto.getExecutors())
             l.add(entityManager.getReference(Employee.class, eid));
         assignment.setExecutors(l);
         

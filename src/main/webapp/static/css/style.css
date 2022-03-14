@@ -15,6 +15,7 @@ html, body, #mainDiv {
     min-height:100px;
 }
 
-.dijitTextBox{
+.dijitTextBox, .dijitSelect{
     margin-left:8px;
+    margin-right:8px;
 }

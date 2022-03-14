@@ -87,7 +87,9 @@ define([
                 onGridUpdate: function(){
                     this.replaceIdsWithEmployees(".field-director");
                 },
-                
+                onShow: function(){
+                    this.replaceIdsWithEmployees(".field-director");
+                },
                 //Delete instance on tab close
                 onClose : function(){
                     instance = null;

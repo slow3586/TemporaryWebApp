@@ -74,6 +74,7 @@ public class AssignmentController {
         if(orderBy!=null && !orderBy.isEmpty()){
             orderDesc = !orderBy.substring(0, 1).equals("-");
             columnName = orderBy.substring(1);
+            //if(columnName=="executors_ids") columnName="executors"
         }
         
         //Build content range and total count of objects in the DB header string

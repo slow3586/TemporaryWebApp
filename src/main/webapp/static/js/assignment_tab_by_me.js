@@ -30,7 +30,7 @@ define([
                     {label:i18.assignment_all_column_topic, value:"topic"},
                     {label:i18.assignment_all_column_text, value:"text"},
                     {label:i18.assignment_all_column_status, value:"executeattr"},
-                    {label:i18.assignment_all_column_execute_by, value:"executeby"},
+                    //{label:i18.assignment_all_column_execute_by, value:"executeby"},
                     {label:i18.assignment_all_column_executors, value:"executors"}
                 ], 
                 
@@ -40,7 +40,7 @@ define([
                     { field: 'text', label: i18.assignment_all_column_text},
                     { field: 'executeattr', label: i18.assignment_all_column_status},
                     { field: 'executeby', label: i18.assignment_all_column_execute_by},
-                    { field: 'executors_ids', label: i18.assignment_all_column_executors}
+                    { field: 'executors', label: i18.assignment_all_column_executors}
                 ],
                 
                 //Saves the tab instance to a global variable.
@@ -76,14 +76,14 @@ define([
                             filterData = {'executeattr':this.filterValue};
                         }else if(this.filterColumn==="executeby"){
                             filterData = {'executeby':this.filterValue};
-                        }else if(this.filterColumn==="executorsIds"){
-                            filterData = {'executorsIds':this.filterValue};
+                        }else if(this.filterColumn==="executors"){
+                            filterData = {'executors':this.filterValue};
                         }
                     }
                     
                     //Set up filter to only display rows from author with id 1
                     //TODO: implement users and make tab display user's assignments
-                    filterData.authorId = 1;
+                    filterData.author = 1;
                     
                     //Apply filter
                     this.grid.set("collection", this.gridData.filter(filterData));
@@ -93,7 +93,17 @@ define([
                 //this function replaces author and executor ids
                 //with their respective first and last names for clarity.
                 onGridUpdate: function(){
-                    this.replaceIdsWithEmployees(".field-executors_ids");
+                    this.replaceIdsWithEmployees(".field-executors");
+                },
+                onShow: function(){
+                    this.filterAll();
+                    this.replaceIdsWithEmployees(".field-executors");
+                },
+                
+                //Delete instance on tab close
+                onClose : function(){
+                    instance = null;
+                    return true;
                 },
                 
                 //Opens a new item tab on add button click

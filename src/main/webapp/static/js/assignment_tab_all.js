@@ -31,7 +31,7 @@ define([
                     {label:i18.assignment_all_column_topic, value:"topic"},
                     {label:i18.assignment_all_column_text, value:"text"},
                     {label:i18.assignment_all_column_status, value:"executeattr"},
-                    {label:i18.assignment_all_column_execute_by, value:"executeby"},
+                    //{label:i18.assignment_all_column_execute_by, value:"executeby"},
                     {label:i18.assignment_all_column_executors, value:"executors"},
                     {label:i18.assignment_all_column_author, value:"author"}
                 ], 
@@ -42,8 +42,8 @@ define([
                     { field: 'text', label: i18.assignment_all_column_text},
                     { field: 'executeattr', label: i18.assignment_all_column_status},
                     { field: 'executeby', label: i18.assignment_all_column_execute_by},
-                    { field: 'executors_ids', label: i18.assignment_all_column_executors},
-                    { field: 'author_id', label: i18.assignment_all_column_author}
+                    { field: 'executors', label: i18.assignment_all_column_executors, sortable: false},
+                    { field: 'author', label: i18.assignment_all_column_author}
                 ],
                 
                 //Saves the tab instance to a global variable.
@@ -79,10 +79,10 @@ define([
                             filterData = {'executeattr':this.filterValue};
                         }else if(this.filterColumn==="executeby"){
                             filterData = {'executeby':this.filterValue};
-                        }else if(this.filterColumn==="executorsIds"){
-                            filterData = {'executorsIds':this.filterValue};
-                        }else if(this.filterColumn==="authorId"){
-                            filterData = {'authorId':this.filterValue};
+                        }else if(this.filterColumn==="executors"){
+                            filterData = {'executors':this.filterValue};
+                        }else if(this.filterColumn==="author"){
+                            filterData = {'author':this.filterValue};
                         }
                     }
                     
@@ -94,9 +94,11 @@ define([
                 //this function replaces author and executor ids
                 //with their respective first and last names for clarity.
                 onGridUpdate: function(){
-                    this.replaceIdsWithEmployees(".field-author_id,.field-executors_ids");
+                    this.replaceIdsWithEmployees(".field-author,.field-executors");
                 },
-                
+                onShow: function(){
+                    this.replaceIdsWithEmployees(".field-author,.field-executors");
+                },
                 //Delete instance on tab close
                 onClose : function(){
                     instance = null;
