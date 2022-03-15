@@ -179,7 +179,7 @@ define([
                         text: tbtext.get("value"),
                         author: tbauthor.get("value"),
                         executors: tbexecutors.get("value").split(","),
-                        executebyAsString: tbexecuteby.get("value"),
+                        executeby: tbexecuteby.get("value"),
                         executeattr: tbstatus.get("value"),
                         controlattr: "0"
                     };

@@ -19,6 +19,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Set;
 import com.demskv.webassignmenteditor.employee.Employee;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -58,6 +59,7 @@ public class Assignment implements Serializable {
     @Column(name = "executeby")
     @Temporal(TemporalType.TIMESTAMP)
     @Future
+    @JsonFormat(pattern = "HH:mm dd.MM.yyyy", timezone = "UTC")
     private Date executeby;
     
     /**

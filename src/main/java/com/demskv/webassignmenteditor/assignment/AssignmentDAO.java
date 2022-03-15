@@ -1,5 +1,6 @@
 package com.demskv.webassignmenteditor.assignment;
 
+import com.demskv.webassignmenteditor.JsonUtil;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -108,7 +109,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         List<AssignmentDTO> dtos = new ArrayList<>(assignments.size());
         for (Assignment a : assignments) {
             dtos.add(new AssignmentDTO(
-                    a.getId(), a.getTopic(), a.getExecuteby(), 
+                    a.getId(), a.getTopic(), AssignmentDTO.df.format(a.getExecuteby()), 
                     a.getControlattr(),a.getExecuteattr(), a.getText(), 
                     a.getAuthor().getId(), a.getExecutors()));
         }
@@ -127,7 +128,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         //Convert DTO into assignment.
         Assignment assignment = new Assignment();
         assignment.setTopic(dto.getTopic());
-        assignment.setExecuteby(dto.getExecuteby());
+        assignment.setExecuteby(dto.getExecutebyAsDate());
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());
@@ -153,7 +154,7 @@ public class AssignmentDAO implements AssignmentDAOLocal {
         //Convert DTO into assignment.
         Assignment assignment = entityManager.find(Assignment.class, dto.getId());
         assignment.setTopic(dto.getTopic());
-        assignment.setExecuteby(dto.getExecuteby());
+        assignment.setExecuteby(dto.getExecutebyAsDate());
         assignment.setControlattr(dto.getControlattr());
         assignment.setExecuteattr(dto.getExecuteattr());
         assignment.setText(dto.getText());

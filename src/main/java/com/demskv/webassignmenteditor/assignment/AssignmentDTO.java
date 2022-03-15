@@ -18,20 +18,18 @@ import java.util.logging.Logger;
 public class AssignmentDTO {
     private Integer id;
     private String topic;   
-    @JsonFormat(pattern = "HH:mm dd.MM.yyyy", timezone = "UTC")
-    private Date executeby;
-    private String executebyAsString;
+    private String executeby;
     private Integer controlattr;
     private Integer executeattr;
     private String text;
     private Integer author;
     private Set<Integer> executors;
-    private static final SimpleDateFormat df = new SimpleDateFormat( "HH:mm dd.MM.yyyy" );
+    public static final SimpleDateFormat df = new SimpleDateFormat( "HH:mm dd.MM.yyyy" );
     
     public AssignmentDTO() {
     }
     
-    public AssignmentDTO(Integer id, String topic, Date executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Set<Employee> executorsIds) {
+    public AssignmentDTO(Integer id, String topic, String executeby, Integer controlattr, Integer executeattr, String text, Integer authorId, Set<Employee> executorsIds) {
         this.id = id;
         this.topic = topic;
         this.executeby = executeby;
@@ -62,18 +60,21 @@ public class AssignmentDTO {
         this.topic = topic;
     }
 
-    public Date getExecuteby() {
-        if(executeby==null && executebyAsString!=null){
-            try {
-                executeby = df.parse(executebyAsString);
-            } catch (ParseException ex) {
-                Logger.getLogger(AssignmentDTO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    public String getExecuteby() {
         return executeby;
     }
+    
+    public Date getExecutebyAsDate() {
+        Date date = null;
+        try {
+            date = df.parse(executeby);
+        } catch (ParseException ex) {
+            Logger.getLogger(AssignmentDTO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return date;
+    }
 
-    public void setExecuteby(Date executeby) {
+    public void setExecuteby(String executeby) {
         this.executeby = executeby;
     }
 
@@ -115,14 +116,6 @@ public class AssignmentDTO {
 
     public void setExecutors(Set<Integer> executors) {
         this.executors = executors;
-    }
-
-    public String getExecutebyAsString() {
-        return executebyAsString;
-    }
-
-    public void setExecutebyAsString(String executebyAsString) {
-        this.executebyAsString = executebyAsString;
     }
     
     
