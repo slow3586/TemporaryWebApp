@@ -10,6 +10,10 @@ define({
         tree_all_assignments: "All assignments",
         tree_assignments_by_me: "Assignments by me",
         tree_assignments_for_me: "Assignments for me",
+        assignment_all_created: "Created",
+        assignment_all_assigned: "Assigned",
+        assignment_all_accepted: "Accepted",
+        assignment_all_executed: "Executed",
         assignment_all_title: "All assignments",
         assignment_all_column_id: "ID",
         assignment_all_column_topic: "Topic",
@@ -51,6 +55,12 @@ define({
         base_tab_all_delete_content: "Are you sure you want to delete ",
         base_tab_edit_save: "Save",
         base_tab_edit_create: "Create",
+        base_tab_edit_error: "Error",
+        base_tab_edit_error_fields_incorrect: "One of the fields is incorrect",
+        base_tab_edit_error_length: "This field must not be empty or longer than 64 characters",
+        base_tab_edit_error_single_employee_id: "This field must contain a single employee ID",
+        base_tab_edit_error_multiple_employee_id: "This field must contain a list of employee IDs separated by ,",
+        base_tab_edit_error_date: "This field must containt a date formatted as HH:mm dd.MM.yyyy",
         
     },
 

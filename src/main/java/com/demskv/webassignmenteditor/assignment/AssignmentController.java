@@ -84,6 +84,7 @@ public class AssignmentController {
                 .append(from).append("-").append(from+limit).append("/")
                 .append(service.countAll(filterId, filterTopic, filterText, filterAuthor, 
                                 filterExecuteby, filterExecuteattr, filterExecutors));
+        
         return Response.ok()
                 .header("Content-Range", contentRangeBuilder.toString())
                 
